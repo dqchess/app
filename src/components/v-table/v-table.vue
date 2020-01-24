@@ -34,10 +34,6 @@ import TableHeader from './_table-header.vue';
 import TableRow from './_table-row.vue';
 import { sortBy } from 'lodash';
 
-/**
- * @TODO Rename `value` to field in headers
- */
-
 const HeaderDefaults: Header = {
 	text: '',
 	value: '',
@@ -109,14 +105,14 @@ export default createComponent({
 
 		return { _headers, _items, _sortBy, _sortDesc, onUpdateSortBy, onUpdateSortDesc };
 
-		function onUpdateSortBy(newField: string) {
-			_sortBy.value = newField;
-			emit('update:sort-by', newField);
+		function onUpdateSortBy(value: string) {
+			_sortBy.value = value;
+			emit('update:sort-by', value);
 		}
 
-		function onUpdateSortDesc(newDesc: boolean) {
-			_sortDesc.value = newDesc;
-			emit('update:sort-desc', newDesc);
+		function onUpdateSortDesc(value: boolean) {
+			_sortDesc.value = value;
+			emit('update:sort-desc', value);
 		}
 	}
 });
