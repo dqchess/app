@@ -232,3 +232,57 @@ export const customHeader = () => ({
 	</v-table>
 	`
 });
+
+export const sorting = () => ({
+	data() {
+		return {
+			headers: [
+				{
+					text: 'Name',
+					value: 'name'
+				},
+				{
+					text: 'Phone',
+					value: 'tel'
+				},
+				{
+					text: 'Contact',
+					value: 'contact'
+				}
+			],
+			items: [
+				{
+					name: 'Amsterdam',
+					tel: '(020) 333-0987',
+					contact: 'Mariann Rumble'
+				},
+				{
+					name: 'Beverly Hills',
+					tel: '(123) 333-0987',
+					contact: 'Kathy Baughan'
+				},
+				{
+					name: 'New Haven',
+					tel: '(203) 687-9900',
+					contact: 'Fleur Tebbet'
+				},
+				{
+					name: 'Hong Kong',
+					tel: '(430) 709-4011',
+					contact: 'Rodolph Tofful'
+				},
+				{
+					name: 'Ahmedabad',
+					tel: '(330) 777-3240',
+					contact: 'Helenka Killely'
+				}
+			]
+		};
+	},
+	template: `
+	<v-table
+		:headers="headers"
+		:items="items"
+	/>
+	`
+});

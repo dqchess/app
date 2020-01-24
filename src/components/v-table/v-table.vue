@@ -1,12 +1,17 @@
 <template>
 	<table class="v-table">
-		<table-header :headers="_headers">
+		<table-header :headers="_headers" :sort-by="_sortBy" @update:sort-by="onUpdateSortBy">
 			<template v-for="header in _headers" #[`header.${header.value}`]>
 				<slot :header="header" :name="`header.${header.value}`" />
 			</template>
 		</table-header>
 		<tbody>
-			<table-row :headers="_headers" :item="item" v-for="(item, index) in items" :key="index">
+			<table-row
+				v-for="(item, index) in _items"
+				:headers="_headers"
+				:item="item"
+				:key="index"
+			>
 				<template v-for="header in _headers" #[`item.${header.value}`]>
 					<slot :item="item" :name="`item.${header.value}`" />
 				</template>
@@ -17,10 +22,11 @@
 
 <script lang="ts">
 import { VNode } from 'vue';
-import { createComponent, computed } from '@vue/composition-api';
+import { createComponent, computed, ref, watch, Ref } from '@vue/composition-api';
 import { Header, HeaderRaw } from './types';
 import TableHeader from './_table-header.vue';
 import TableRow from './_table-row.vue';
+import { sortBy } from 'lodash';
 
 const HeaderDefaults: Header = {
 	text: '',
@@ -41,9 +47,37 @@ export default createComponent({
 		items: {
 			type: Array as () => object[],
 			required: true
+		},
+		sortBy: {
+			type: String,
+			default: null
+		},
+		sortDesc: {
+			type: Boolean,
+			default: false
 		}
 	},
-	setup(props, { slots }) {
+	setup(props, { slots, emit }) {
+		// We keep a manual copy of the sort status instead of always relying on the parent in order
+		// to support sorting for inline tables without any additional state management.
+		let _sortBy = ref<string | null>(props.sortBy);
+		let _sortDesc = ref<Boolean>(props.sortDesc);
+
+		// This does mean that we have to watch the props, and update the local state manually on
+		// changes of the props.
+		watch(
+			() => props.sortBy,
+			(newSort: string) => (_sortBy.value = props.sortBy)
+		);
+
+		watch(
+			() => props.sortDesc,
+			(newSort: boolean) => (_sortDesc.value = props.sortDesc)
+		);
+
+		/**
+		 * Headers prop merged with the default values for each Header
+		 */
 		const _headers = computed<Header[]>(() => {
 			return props.headers.map((header: HeaderRaw) => ({
 				...HeaderDefaults,
@@ -51,11 +85,42 @@ export default createComponent({
 			}));
 		});
 
-		const itemSlots = computed(() =>
-			slots.filter((slot: VNode, name: string) => name.startsWith('item.'))
-		);
+		/**
+		 * Items sorted based on sort-by and sort-desc props and with unique key added in $key
+		 * @TODO Default internal sort to first sortable column if explicit sort isn't set
+		 */
+		const _items = computed<object[]>(() => {
+			if (!_sortBy) return props.items;
+			const itemsSorted = sortBy(props.items, [_sortBy.value]);
+			if (_sortDesc.value === true) return itemsSorted.reverse();
+			return itemsSorted;
+		});
 
-		return { _headers, itemSlots };
+		return { _headers, _items, _sortBy, _sortDesc, onUpdateSortBy };
+
+		function onUpdateSortBy(newField: string) {
+			if (newField === _sortBy.value) {
+				if (_sortDesc.value === false) {
+					setSortDesc(true);
+				} else {
+					setSortDesc(false);
+					setSortBy(null);
+				}
+			} else {
+				setSortBy(newField);
+				setSortDesc(false);
+			}
+		}
+
+		function setSortBy(value: string | null) {
+			_sortBy.value = value;
+			emit('update:sort-by', value);
+		}
+
+		function setSortDesc(value: boolean) {
+			_sortDesc.value = value;
+			emit('update:sort-desc', value);
+		}
 	}
 });
 </script>
