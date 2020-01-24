@@ -1,7 +1,7 @@
 <template>
 	<tr class="v-table_table-row">
 		<td v-for="header in headers" :key="header.value" :class="getClassesForHeader(header)">
-			{{ item[header.value] }}
+			<slot :name="`item.${header.value}`">{{ item[header.value] }}</slot>
 		</td>
 	</tr>
 </template>

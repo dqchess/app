@@ -2,17 +2,17 @@
 	<table class="v-table">
 		<table-header :headers="_headers" />
 		<tbody>
-			<table-row
-				:headers="_headers"
-				:item="item"
-				v-for="(item, index) in items"
-				:key="index"
-			/>
+			<table-row :headers="_headers" :item="item" v-for="(item, index) in items" :key="index">
+				<template v-for="header in _headers" #[`item.${header.value}`]>
+					<slot :item="item" :name="`item.${header.value}`" />
+				</template>
+			</table-row>
 		</tbody>
 	</table>
 </template>
 
 <script lang="ts">
+import { VNode } from 'vue';
 import { createComponent, computed } from '@vue/composition-api';
 import { Header, HeaderRaw } from './types';
 import TableHeader from './_table-header.vue';
@@ -39,7 +39,7 @@ export default createComponent({
 			required: true
 		}
 	},
-	setup(props) {
+	setup(props, { slots }) {
 		const _headers = computed<Header[]>(() => {
 			return props.headers.map((header: HeaderRaw) => ({
 				...HeaderDefaults,
@@ -47,7 +47,11 @@ export default createComponent({
 			}));
 		});
 
-		return { _headers };
+		const itemSlots = computed(() =>
+			slots.filter((slot: VNode, name: string) => name.startsWith('item.'))
+		);
+
+		return { _headers, itemSlots };
 	}
 });
 </script>

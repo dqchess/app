@@ -1,5 +1,5 @@
 import VueCompositionAPI from '@vue/composition-api';
-import { mount, createLocalVue, Wrapper } from '@vue/test-utils';
+import { mount, createLocalVue, Wrapper, shallowMount } from '@vue/test-utils';
 
 const localVue = createLocalVue();
 localVue.use(VueCompositionAPI);
@@ -109,6 +109,43 @@ describe('Table', () => {
 			await component.vm.$nextTick();
 
 			expect(component.find('th').classes()).toContain('align-left');
+		});
+	});
+
+	describe('Customized row', () => {
+		it('Renders the provided element in the nested scoped slot', async () => {
+			const component = mount(VTable, {
+				localVue,
+				propsData: {
+					headers: [
+						{
+							text: 'Column 1',
+							value: 'col1'
+						},
+						{
+							text: 'Column 2',
+							value: 'col2'
+						}
+					],
+					items: [
+						{
+							col1: 'Test 1 Col 1',
+							col2: 'Test 1 Col 2'
+						},
+						{
+							col1: 'Test 2 Col 1',
+							col2: 'Test 2 Col 2'
+						}
+					]
+				},
+				scopedSlots: {
+					'item.col2': '<template slot-scope="{item}"><p>{{ item.col2 }}</p></template>'
+				}
+			});
+
+			expect(component.find('.v-table_table-row td:nth-child(2) > *').html()).toEqual(
+				'<p>Test 1 Col 2</p>'
+			);
 		});
 	});
 });
