@@ -277,13 +277,24 @@ export const sorting = () => ({
 					tel: '(330) 777-3240',
 					contact: 'Helenka Killely'
 				}
-			]
+			],
+			sortBy: 'name',
+			sortDesc: false
 		};
 	},
 	template: `
-	<v-table
-		:headers="headers"
-		:items="items"
-	/>
+	<div>
+		<v-table
+			:headers="headers"
+			:items="items"
+			:sort-by.sync="sortBy"
+			:sort-desc.sync="sortDesc"
+		/>
+		<p style="margin-top: 2rem;">Table syncs the sort-by and sort-desc props when using \`sync\` modifier:</p>
+		<pre style="max-width: max-content; margin-top: 20px; background-color: #eee; font-family: monospace; padding: 0.5rem; border-radius: 8px;">
+sort-by: {{ sortBy }}
+sort-desc: {{ sortDesc }}</pre>
+		<p style="margin-top: 2rem;">Defaults to first sortable column that's passed in (\`name\` in this example)</p>
+	</div>
 	`
 });

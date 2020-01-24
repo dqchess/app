@@ -94,11 +94,20 @@ export default createComponent({
 
 		/**
 		 * Items sorted based on sort-by and sort-desc props and with unique key added in $key
-		 * @TODO Default internal sort to first sortable column if explicit sort isn't set
 		 */
 		const _items = computed<object[]>(() => {
-			if (!_sortBy) return props.items;
-			const itemsSorted = sortBy(props.items, [_sortBy.value]);
+			const fallbackSortHeader: Header | undefined = _headers.value.find(
+				(header: Header) => header.sortable === true
+			);
+
+			const fallbackSortProperty: string | null =
+				(fallbackSortHeader && fallbackSortHeader.value) || null;
+
+			let sortProperty: string | null = _sortBy.value || fallbackSortProperty;
+
+			if (sortProperty === null) return props.items;
+
+			const itemsSorted = sortBy(props.items, [sortProperty]);
 			if (_sortDesc.value === true) return itemsSorted.reverse();
 			return itemsSorted;
 		});
