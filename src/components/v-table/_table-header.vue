@@ -8,6 +8,7 @@
 				@click="changeSort(header)"
 			>
 				<slot :name="`header.${header.value}`">{{ header.text }}</slot>
+				<v-icon v-if="sortBy === header.value" name="sort" class="sort-icon" />
 			</th>
 		</tr>
 	</thead>
@@ -85,6 +86,12 @@ export default createComponent({
 .v-table_table-header {
 	.sortable {
 		cursor: pointer;
+
+		&.sort-asc {
+			.sort-icon {
+				transform: scaleY(-1);
+			}
+		}
 	}
 }
 </style>
