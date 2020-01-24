@@ -117,7 +117,7 @@ export const alignment = () => ({
 	`
 });
 
-export const slotPerColumn = () => ({
+export const customRow = () => ({
 	data() {
 		return {
 			headers: [
@@ -170,6 +170,64 @@ export const slotPerColumn = () => ({
 	>
 		<template #item.name="{ item }">
 			<v-button>{{ item.name }}</v-button>
+		</template>
+	</v-table>
+	`
+});
+
+export const customHeader = () => ({
+	data() {
+		return {
+			headers: [
+				{
+					text: 'Name',
+					value: 'name'
+				},
+				{
+					text: 'Phone',
+					value: 'tel'
+				},
+				{
+					text: 'Contact',
+					value: 'contact'
+				}
+			],
+			items: [
+				{
+					name: 'Amsterdam',
+					tel: '(020) 333-0987',
+					contact: 'Mariann Rumble'
+				},
+				{
+					name: 'Beverly Hills',
+					tel: '(123) 333-0987',
+					contact: 'Kathy Baughan'
+				},
+				{
+					name: 'New Haven',
+					tel: '(203) 687-9900',
+					contact: 'Fleur Tebbet'
+				},
+				{
+					name: 'Hong Kong',
+					tel: '(430) 709-4011',
+					contact: 'Rodolph Tofful'
+				},
+				{
+					name: 'Ahmedabad',
+					tel: '(330) 777-3240',
+					contact: 'Helenka Killely'
+				}
+			]
+		};
+	},
+	template: `
+	<v-table
+		:headers="headers"
+		:items="items"
+	>
+		<template #header.name="{ header }">
+			<v-icon name="star" />
 		</template>
 	</v-table>
 	`

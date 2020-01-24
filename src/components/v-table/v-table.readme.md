@@ -40,6 +40,23 @@
 | `value`* | Name of the object property that holds the value of the item | --      |
 | `align`  | Text alignment of value. One of `left`, `center`, `right`    | `left`  |
 
+## Custom element / component for header
+
+You can override the displayed header name by using the dynamic `header.[name]` slot. `[name]` is the `value` property in the header item for this column sent to `headers`.
+
+```html
+<v-table
+	:headers="headers"
+	:items="items"
+>
+	<template #header.name="{ header }">
+		<v-button>{{ header.text }}</v-button>
+	</template>
+</v-table>
+```
+
+In this slot, you have access to the `header` through the scoped slot binding.
+
 ## Custom element / component for cell value
 
 You can override the columns in a row by using the dynamic `item.[name]` slot. `[name]` is the `value` property in the header item for this column sent to `headers`.

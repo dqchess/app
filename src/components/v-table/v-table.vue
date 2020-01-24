@@ -1,6 +1,10 @@
 <template>
 	<table class="v-table">
-		<table-header :headers="_headers" />
+		<table-header :headers="_headers">
+			<template v-for="header in _headers" #[`header.${header.value}`]>
+				<slot :header="header" :name="`header.${header.value}`" />
+			</template>
+		</table-header>
 		<tbody>
 			<table-row :headers="_headers" :item="item" v-for="(item, index) in items" :key="index">
 				<template v-for="header in _headers" #[`item.${header.value}`]>

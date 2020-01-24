@@ -112,7 +112,43 @@ describe('Table', () => {
 		});
 	});
 
-	describe('Customized row', () => {
+	describe('Customized header / row', () => {
+		it('Renders the provided element in the nested scoped slot for the header', async () => {
+			const component = mount(VTable, {
+				localVue,
+				propsData: {
+					headers: [
+						{
+							text: 'Column 1',
+							value: 'col1'
+						},
+						{
+							text: 'Column 2',
+							value: 'col2'
+						}
+					],
+					items: [
+						{
+							col1: 'Test 1 Col 1',
+							col2: 'Test 1 Col 2'
+						},
+						{
+							col1: 'Test 2 Col 1',
+							col2: 'Test 2 Col 2'
+						}
+					]
+				},
+				scopedSlots: {
+					'header.col2':
+						'<template slot-scope="{header}"><p>{{ header.text }}</p></template>'
+				}
+			});
+
+			expect(component.find('.v-table_table-header th:nth-child(2) > *').html()).toEqual(
+				'<p>Column 2</p>'
+			);
+		});
+
 		it('Renders the provided element in the nested scoped slot', async () => {
 			const component = mount(VTable, {
 				localVue,

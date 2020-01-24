@@ -2,7 +2,7 @@
 	<thead class="v-table_table-header">
 		<tr>
 			<th v-for="header in headers" :key="header.value" :class="getClassesForHeader(header)">
-				{{ header.text }}
+				<slot :name="`header.${header.value}`">{{ header.text }}</slot>
 			</th>
 		</tr>
 	</thead>
