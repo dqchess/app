@@ -1,6 +1,12 @@
 <template>
 	<table class="v-table">
-		<table-header :headers="_headers" :sort-by="_sortBy" @update:sort-by="onUpdateSortBy">
+		<table-header
+			:headers="_headers"
+			:sort-desc="_sortDesc"
+			:sort-by="_sortBy"
+			@update:sort-by="onUpdateSortBy"
+			@update:sort-desc="onUpdateSortDesc"
+		>
 			<template v-for="header in _headers" #[`header.${header.value}`]>
 				<slot :header="header" :name="`header.${header.value}`" />
 			</template>
@@ -28,10 +34,15 @@ import TableHeader from './_table-header.vue';
 import TableRow from './_table-row.vue';
 import { sortBy } from 'lodash';
 
+/**
+ * @TODO Rename `value` to field in headers
+ */
+
 const HeaderDefaults: Header = {
 	text: '',
 	value: '',
-	align: 'left'
+	align: 'left',
+	sortable: true
 };
 
 export default createComponent({
@@ -96,30 +107,16 @@ export default createComponent({
 			return itemsSorted;
 		});
 
-		return { _headers, _items, _sortBy, _sortDesc, onUpdateSortBy };
+		return { _headers, _items, _sortBy, _sortDesc, onUpdateSortBy, onUpdateSortDesc };
 
 		function onUpdateSortBy(newField: string) {
-			if (newField === _sortBy.value) {
-				if (_sortDesc.value === false) {
-					setSortDesc(true);
-				} else {
-					setSortDesc(false);
-					setSortBy(null);
-				}
-			} else {
-				setSortBy(newField);
-				setSortDesc(false);
-			}
+			_sortBy.value = newField;
+			emit('update:sort-by', newField);
 		}
 
-		function setSortBy(value: string | null) {
-			_sortBy.value = value;
-			emit('update:sort-by', value);
-		}
-
-		function setSortDesc(value: boolean) {
-			_sortDesc.value = value;
-			emit('update:sort-desc', value);
+		function onUpdateSortDesc(newDesc: boolean) {
+			_sortDesc.value = newDesc;
+			emit('update:sort-desc', newDesc);
 		}
 	}
 });

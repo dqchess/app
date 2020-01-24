@@ -4,6 +4,7 @@ export type HeaderRaw = {
 	text: string;
 	value: string;
 	align?: Alignment;
+	sortable?: boolean;
 };
 
 export type Header = Required<HeaderRaw>;

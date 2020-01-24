@@ -243,7 +243,8 @@ export const sorting = () => ({
 				},
 				{
 					text: 'Phone',
-					value: 'tel'
+					value: 'tel',
+					sortable: false
 				},
 				{
 					text: 'Contact',
