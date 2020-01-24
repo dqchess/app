@@ -1,9 +1,9 @@
 <template>
 	<table class="v-table">
-		<table-header :headers="headers" />
+		<table-header :headers="_headers" />
 		<tbody>
 			<table-row
-				:headers="headers"
+				:headers="_headers"
 				:item="item"
 				v-for="(item, index) in items"
 				:key="index"
@@ -13,10 +13,16 @@
 </template>
 
 <script lang="ts">
-import { createComponent } from '@vue/composition-api';
-import { Header } from './types';
+import { createComponent, computed } from '@vue/composition-api';
+import { Header, HeaderRaw } from './types';
 import TableHeader from './_table-header.vue';
 import TableRow from './_table-row.vue';
+
+const HeaderDefaults: Header = {
+	text: '',
+	value: '',
+	align: 'left'
+};
 
 export default createComponent({
 	components: {
@@ -25,15 +31,41 @@ export default createComponent({
 	},
 	props: {
 		headers: {
-			type: Array as () => Header[],
+			type: Array as () => HeaderRaw[],
 			required: true
 		},
 		items: {
 			type: Array as () => object[],
 			required: true
 		}
+	},
+	setup(props) {
+		const _headers = computed<Header[]>(() => {
+			return props.headers.map((header: HeaderRaw) => ({
+				...HeaderDefaults,
+				...header
+			}));
+		});
+
+		return { _headers };
 	}
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.v-table {
+	::v-deep {
+		.align-left {
+			text-align: left;
+		}
+
+		.align-center {
+			text-align: center;
+		}
+
+		.align-right {
+			text-align: right;
+		}
+	}
+}
+</style>

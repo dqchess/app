@@ -65,4 +65,50 @@ describe('Table', () => {
 			expect(component.find('.v-table_table-row').findAll('td').length).toBe(2);
 		});
 	});
+
+	describe('Alignment', () => {
+		it('Adds the align class to the header', async () => {
+			component.setProps({
+				headers: [
+					{
+						text: 'Col1',
+						value: 'col1',
+						align: 'left'
+					},
+					{
+						text: 'Col2',
+						value: 'col2',
+						align: 'center'
+					},
+					{
+						text: 'Col3',
+						value: 'col3',
+						align: 'right'
+					}
+				]
+			});
+
+			await component.vm.$nextTick();
+
+			expect(component.find('th:first-child').classes()).toContain('align-left');
+			expect(component.find('th:nth-child(2)').classes()).toContain('align-center');
+			expect(component.find('th:nth-child(3)').classes()).toContain('align-right');
+		});
+
+		it('Defaults to left aligning', async () => {
+			component.setProps({
+				headers: [
+					{
+						text: 'Col1',
+						value: 'col1'
+						// no align
+					}
+				]
+			});
+
+			await component.vm.$nextTick();
+
+			expect(component.find('th').classes()).toContain('align-left');
+		});
+	});
 });

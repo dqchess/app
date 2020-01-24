@@ -1,6 +1,6 @@
 <template>
 	<tr class="v-table_table-row">
-		<td v-for="header in headers" :key="header.value">
+		<td v-for="header in headers" :key="header.value" :class="getClassesForHeader(header)">
 			{{ item[header.value] }}
 		</td>
 	</tr>
@@ -19,6 +19,19 @@ export default createComponent({
 		item: {
 			type: Object,
 			required: true
+		}
+	},
+	setup(props) {
+		return { getClassesForHeader };
+
+		function getClassesForHeader(header: Header) {
+			const classes: string[] = [];
+
+			if (header.align) {
+				classes.push(`align-${header.align}`);
+			}
+
+			return classes;
 		}
 	}
 });
