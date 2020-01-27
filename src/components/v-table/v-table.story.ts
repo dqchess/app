@@ -514,3 +514,101 @@ export const fixedHeader = () => ({
 	<v-sheet><v-table :headers="headers" :items="items" :height="200" fixed-header /></v-sheet>
 	`
 });
+
+export const loading = () => ({
+	data() {
+		return {
+			headers: [
+				{
+					text: 'Name',
+					value: 'name'
+				},
+				{
+					text: 'Phone',
+					value: 'tel',
+					sortable: false
+				},
+				{
+					text: 'Contact',
+					value: 'contact'
+				}
+			],
+			items: [
+				{
+					id: 1,
+					name: 'Amsterdam',
+					tel: '(020) 333-0987',
+					contact: 'Mariann Rumble'
+				},
+				{
+					id: 2,
+					name: 'Beverly Hills',
+					tel: '(123) 333-0987',
+					contact: 'Kathy Baughan'
+				},
+				{
+					id: 3,
+					name: 'New Haven',
+					tel: '(203) 687-9900',
+					contact: 'Fleur Tebbet'
+				},
+				{
+					id: 4,
+					name: 'Hong Kong',
+					tel: '(430) 709-4011',
+					contact: 'Rodolph Tofful'
+				},
+				{
+					id: 5,
+					name: 'Ahmedabad',
+					tel: '(330) 777-3240',
+					contact: 'Helenka Killely'
+				}
+			]
+		};
+	},
+	template: `
+		<div>
+		<v-table
+			:headers="headers"
+			:items="items"
+			loading
+		/>
+	</div>
+	`
+});
+
+export const loadingNoRows = () => ({
+	data() {
+		return {
+			headers: [
+				{
+					text: 'Name',
+					value: 'name'
+				},
+				{
+					text: 'Phone',
+					value: 'tel',
+					sortable: false
+				},
+				{
+					text: 'Contact',
+					value: 'contact'
+				}
+			],
+			items: []
+		};
+	},
+	template: `
+		<div>
+		<v-table
+			:headers="headers"
+			:items="items"
+			loading
+			loading-text="Loading items from \`movies\` collection..."
+		/>
+	</div>
+	`
+});
+
+loadingNoRows.title = 'Loading (No Rows)';

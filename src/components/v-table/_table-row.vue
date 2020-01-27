@@ -1,5 +1,5 @@
 <template>
-	<tr class="v-table_table-row">
+	<tr class="v-table_table-row" :class="{ subdued }">
 		<td v-if="showSelect" class="select cell">
 			<v-checkbox :inputValue="isSelected" @change="toggleSelect" />
 		</td>
@@ -33,6 +33,10 @@ export default createComponent({
 			default: false
 		},
 		isSelected: {
+			type: Boolean,
+			default: false
+		},
+		subdued: {
 			type: Boolean,
 			default: false
 		}
@@ -72,6 +76,10 @@ export default createComponent({
 	.select {
 		width: 24px;
 		padding-right: 0;
+	}
+
+	&.subdued {
+		opacity: 0.3;
 	}
 }
 </style>

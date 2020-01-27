@@ -1,5 +1,5 @@
 <template>
-	<div class="v-table" :style="styles">
+	<div class="v-table" :style="styles" :class="{ loading }">
 		<table>
 			<table-header
 				:headers="_headers"
@@ -17,7 +17,16 @@
 					<slot :header="header" :name="`header.${header.value}`" />
 				</template>
 			</table-header>
+			<thead v-if="loading" class="loading-indicator">
+				<th :colspan="_headers.length">
+					<v-progress-linear indeterminate v-if="loading" :height="2" />
+				</th>
+			</thead>
 			<tbody>
+				<tr v-if="loading && items.length === 0" class="loading-text">
+					<td :colspan="_headers.length">{{ loadingText }}</td>
+				</tr>
+
 				<table-row
 					v-for="item in _items"
 					:headers="_headers"
@@ -25,6 +34,7 @@
 					:key="item[itemKey]"
 					:show-select="showSelect"
 					:is-selected="getSelectedState(item)"
+					:subdued="loading"
 					@item-selected="onItemSelected"
 				>
 					<template v-for="header in _headers" #[`item.${header.value}`]>
@@ -43,6 +53,7 @@ import { Header, HeaderRaw, ItemSelectEvent } from './types';
 import TableHeader from './_table-header.vue';
 import TableRow from './_table-row.vue';
 import { sortBy, clone } from 'lodash';
+import { i18n } from '@/lang/';
 
 const HeaderDefaults: Header = {
 	text: '',
@@ -96,6 +107,14 @@ export default createComponent({
 		height: {
 			type: Number,
 			default: null
+		},
+		loading: {
+			type: Boolean,
+			default: false
+		},
+		loadingText: {
+			type: String,
+			default: i18n.t('loading')
 		}
 	},
 	setup(props, { slots, emit }) {
@@ -235,6 +254,30 @@ export default createComponent({
 	table {
 		border-spacing: 0;
 		width: 100%;
+	}
+
+	&.loading {
+		table {
+			pointer-events: none;
+		}
+
+		.loading-indicator {
+			height: auto;
+			padding: 0;
+			border: none;
+
+			th {
+				padding: 0;
+			}
+		}
+
+		.loading-text {
+			td {
+				padding: 16px;
+			}
+			color: var(--input-placeholder-color);
+			text-align: center;
+		}
 	}
 
 	::v-deep {
