@@ -66,6 +66,7 @@ export default createComponent({
 		border-bottom: 1px solid var(--table-row-border-color);
 		height: 48px;
 		padding: 0 16px;
+		background-color: var(--table-background-color);
 	}
 
 	.select {

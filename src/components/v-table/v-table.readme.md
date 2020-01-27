@@ -77,27 +77,29 @@ In this slot, you have access to the `item` through the scoped slot binding.
 
 ## Props
 
-| Prop          | Description                                                        | Default |
-|---------------|--------------------------------------------------------------------|---------|
-| `headers`*    | What columns to show in the table                                  | --      |
-| `items`*      | The individual items to render as rows                             | --      |
-| `item-key`    | Primary key of the item. Used for keys / selections                | `id`    |
-| `sort-by`     | What column to sort by. Supports the `.sync` modifier              | --      |
-| `sort-desc`   | Sort descending instead of ascending. Supports the `.sync` modifier | `false` |
-| `show-select` | Show checkboxes                                                    | `false` |
-| `selection`   | What items are selected. Can be used with `v-model` as well        | `[]`    |
+| Prop           | Description                                                         | Default |
+|----------------|---------------------------------------------------------------------|---------|
+| `headers`*     | What columns to show in the table                                   | --      |
+| `items`*       | The individual items to render as rows                              | --      |
+| `item-key`     | Primary key of the item. Used for keys / selections                 | `id`    |
+| `sort-by`      | What column to sort by. Supports the `.sync` modifier               | --      |
+| `sort-desc`    | Sort descending instead of ascending. Supports the `.sync` modifier | `false` |
+| `show-select`  | Show checkboxes                                                     | `false` |
+| `selection`    | What items are selected. Can be used with `v-model` as well         | `[]`    |
+| `fixed-header` | Make the header fixed                                               | `false` |
+| `height`       | A fixed height (in px) for the table                                | --      |
 
 ## Events
 
-| Event | Description | Value |
-|-------|-------------|-------|
-| `update:sort-by` | `.sync` event for `sort-by` prop | `string` |
-| `update:sort-desc` | `.sync` event for `sort-desc` prop | `boolean` |
-| `item-selected` | Emitted when an item is selected or deselected | `{ item: any, value: boolean }` |
-| `select` | Emitted when selected items change | `any[]` |
+| Event              | Description                                    | Value                           |
+|--------------------|------------------------------------------------|---------------------------------|
+| `update:sort-by`   | `.sync` event for `sort-by` prop               | `string`                        |
+| `update:sort-desc` | `.sync` event for `sort-desc` prop             | `boolean`                       |
+| `item-selected`    | Emitted when an item is selected or deselected | `{ item: any, value: boolean }` |
+| `select`           | Emitted when selected items change             | `any[]`                         |
 
 ## Slots
 
-| Slot | Description |
-|-----|-------------|
+| Slot           | Description                   |
+|----------------|-------------------------------|
 | `item.[value]` | Override individual row cells |

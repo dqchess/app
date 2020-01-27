@@ -95,7 +95,7 @@ export default createComponent({
 		},
 		height: {
 			type: Number,
-			default: false
+			default: null
 		}
 	},
 	setup(props, { slots, emit }) {

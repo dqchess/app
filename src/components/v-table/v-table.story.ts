@@ -511,6 +511,6 @@ export const fixedHeader = () => ({
 		};
 	},
 	template: `
-	<v-table :headers="headers" :items="items" :height="200" fixed-header />
+	<v-sheet><v-table :headers="headers" :items="items" :height="200" fixed-header /></v-sheet>
 	`
 });
