@@ -34,11 +34,12 @@
 
 ## Headers
 
-| Property | Description                                                  | Default |
-|----------|--------------------------------------------------------------|---------|
-| `text`*  | Text displayed in the column                                 | --      |
-| `value`* | Name of the object property that holds the value of the item | --      |
-| `align`  | Text alignment of value. One of `left`, `center`, `right`    | `left`  |
+| Property   | Description                                                  | Default |
+|------------|--------------------------------------------------------------|---------|
+| `text`*    | Text displayed in the column                                 | --      |
+| `value`*   | Name of the object property that holds the value of the item | --      |
+| `align`    | Text alignment of value. One of `left`, `center`, `right`    | `left`  |
+| `sortable` | If the column can be sorted on                               | `true`  |
 
 ## Custom element / component for header
 
@@ -76,7 +77,24 @@ In this slot, you have access to the `item` through the scoped slot binding.
 
 ## Props
 
+| Prop          | Description                                                        | Default |
+|---------------|--------------------------------------------------------------------|---------|
+| `headers`*    | What columns to show in the table                                  | --      |
+| `items`*      | The individual items to render as rows                             | --      |
+| `item-key`    | Primary key of the item. Used for keys / selections                | `id`    |
+| `sort-by`     | What column to sort by. Supports the `.sync` modifier              | --      |
+| `sort-desc`   | Sort descending instead of ascending. Supports the `.sync` modifier | `false` |
+| `show-select` | Show checkboxes                                                    | `false` |
+| `selection`   | What items are selected. Can be used with `v-model` as well        | `[]`    |
+
 ## Events
+
+| Event | Description | Value |
+|-------|-------------|-------|
+| `update:sort-by` | `.sync` event for `sort-by` prop | `string` |
+| `update:sort-desc` | `.sync` event for `sort-desc` prop | `boolean` |
+| `item-selected` | Emitted when an item is selected or deselected | `{ item: any, value: boolean }` |
+| `select` | Emitted when selected items change | `any[]` |
 
 ## Slots
 

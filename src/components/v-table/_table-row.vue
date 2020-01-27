@@ -1,10 +1,15 @@
 <template>
 	<tr class="v-table_table-row">
-		<td v-if="showSelect">
+		<td v-if="showSelect" class="select cell">
 			<v-checkbox :inputValue="isSelected" @change="toggleSelect" />
 		</td>
-		<td v-for="header in headers" :key="header.value" :class="getClassesForHeader(header)">
-			<slot :name="`item.${header.value}`">{{ item[header.value] }}</slot>
+		<td
+			class="cell"
+			v-for="header in headers"
+			:class="getClassesForHeader(header)"
+			:key="header.value"
+		>
+			<slot :name="`item.${header.value}`" :item="item">{{ item[header.value] }}</slot>
 		</td>
 	</tr>
 </template>
@@ -57,10 +62,15 @@ export default createComponent({
 
 <style lang="scss" scoped>
 .v-table_table-row {
-	td {
+	.cell {
 		border-bottom: 1px solid var(--table-row-border-color);
 		height: 48px;
 		padding: 0 16px;
+	}
+
+	.select {
+		width: 24px;
+		padding-right: 0;
 	}
 }
 </style>

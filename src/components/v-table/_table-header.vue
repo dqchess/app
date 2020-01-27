@@ -1,16 +1,21 @@
 <template>
 	<thead class="v-table_table-header">
 		<tr>
-			<th v-if="showSelect">
-				<v-checkbox />
+			<th v-if="showSelect" class="select cell">
+				<v-checkbox
+					:inputValue="allItemsSelected"
+					:indeterminate="someItemsSelected"
+					@change="toggleSelectAll"
+				/>
 			</th>
 			<th
 				v-for="header in headers"
 				:key="header.value"
 				:class="getClassesForHeader(header)"
+				class="cell"
 				@click="changeSort(header)"
 			>
-				<slot :name="`header.${header.value}`">{{ header.text }}</slot>
+				<slot :name="`header.${header.value}`" :header="header">{{ header.text }}</slot>
 				<v-icon v-if="header.sortable" name="sort" class="sort-icon" small />
 			</th>
 		</tr>
@@ -27,21 +32,29 @@ export default createComponent({
 			type: Array as () => Header[],
 			required: true
 		},
-		sortBy: {
-			type: String,
-			default: null
-		},
 		sortDesc: {
 			type: Boolean,
 			required: true
 		},
+		sortBy: {
+			type: String,
+			default: null
+		},
 		showSelect: {
+			type: Boolean,
+			default: false
+		},
+		someItemsSelected: {
+			type: Boolean,
+			default: false
+		},
+		allItemsSelected: {
 			type: Boolean,
 			default: false
 		}
 	},
 	setup(props, { emit }) {
-		return { getClassesForHeader, changeSort };
+		return { getClassesForHeader, changeSort, toggleSelectAll };
 
 		function getClassesForHeader(header: Header) {
 			const classes: string[] = [];
@@ -85,6 +98,10 @@ export default createComponent({
 				emit('update:sort-desc', false);
 			}
 		}
+
+		function toggleSelectAll() {
+			emit('toggle-select-all', !props.allItemsSelected);
+		}
 	}
 });
 </script>
@@ -118,12 +135,17 @@ export default createComponent({
 		}
 	}
 
-	th {
+	.cell {
 		padding: 0 16px;
 		border-bottom: 1px solid var(--table-head-border-color);
 		height: 48px;
 		font-size: 14px;
 		font-weight: var(--weight-bold);
+	}
+
+	.select {
+		width: 24px;
+		padding-right: 0;
 	}
 }
 </style>

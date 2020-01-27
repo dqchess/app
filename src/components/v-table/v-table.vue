@@ -5,6 +5,9 @@
 			:sort-desc="_sortDesc"
 			:sort-by="_sortBy"
 			:show-select="showSelect"
+			:some-items-selected="someItemsSelected"
+			:all-items-selected="allItemsSelected"
+			@toggle-select-all="onToggleSelectAll"
 			@update:sort-by="onUpdateSortBy"
 			@update:sort-desc="onUpdateSortDesc"
 		>
@@ -81,7 +84,7 @@ export default createComponent({
 		},
 		selection: {
 			type: Array as () => any[],
-			default: []
+			default: () => []
 		}
 	},
 	setup(props, { slots, emit }) {
@@ -132,6 +135,14 @@ export default createComponent({
 			return itemsSorted;
 		});
 
+		const allItemsSelected = computed<boolean>(() => {
+			return props.selection.length === props.items.length;
+		});
+
+		const someItemsSelected = computed<boolean>(() => {
+			return props.selection.length > 0 && allItemsSelected.value === false;
+		});
+
 		return {
 			_headers,
 			_items,
@@ -140,7 +151,10 @@ export default createComponent({
 			onUpdateSortBy,
 			onUpdateSortDesc,
 			onItemSelected,
-			getSelectedState
+			getSelectedState,
+			allItemsSelected,
+			someItemsSelected,
+			onToggleSelectAll
 		};
 
 		function onUpdateSortBy(value: string) {
@@ -174,6 +188,14 @@ export default createComponent({
 		function getSelectedState(item: any) {
 			const selectedKeys = props.selection.map((item: any) => item[props.itemKey]);
 			return selectedKeys.includes(item[props.itemKey]);
+		}
+
+		function onToggleSelectAll(value: boolean) {
+			if (value === true) {
+				emit('select', clone(props.items));
+			} else {
+				emit('select', []);
+			}
 		}
 	}
 });
