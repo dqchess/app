@@ -1,6 +1,6 @@
 <template>
 	<thead class="v-table_table-header">
-		<tr>
+		<tr :class="{ fixed }">
 			<th v-if="showSelect" class="select cell">
 				<v-checkbox
 					:inputValue="allItemsSelected"
@@ -49,6 +49,10 @@ export default createComponent({
 			default: false
 		},
 		allItemsSelected: {
+			type: Boolean,
+			default: false
+		},
+		fixed: {
 			type: Boolean,
 			default: false
 		}
@@ -136,6 +140,7 @@ export default createComponent({
 	}
 
 	.cell {
+		background-color: var(--table-background-color);
 		padding: 0 16px;
 		border-bottom: 1px solid var(--table-head-border-color);
 		height: 48px;
@@ -146,6 +151,11 @@ export default createComponent({
 	.select {
 		width: 24px;
 		padding-right: 0;
+	}
+
+	.fixed th {
+		position: sticky;
+		top: 0;
 	}
 }
 </style>

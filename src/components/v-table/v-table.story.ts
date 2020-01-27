@@ -367,3 +367,150 @@ selection: {{ selection }}
 	</div>
 	`
 });
+
+export const fixedHeader = () => ({
+	data() {
+		return {
+			headers: [
+				{
+					text: 'Name',
+					value: 'name'
+				},
+				{
+					text: 'Phone',
+					value: 'tel',
+					sortable: false
+				},
+				{
+					text: 'Contact',
+					value: 'contact'
+				}
+			],
+			items: [
+				{
+					id: 1,
+					name: 'Amsterdam',
+					tel: '(020) 333-0987',
+					contact: 'Mariann Rumble'
+				},
+				{
+					id: 2,
+					name: 'Beverly Hills',
+					tel: '(123) 333-0987',
+					contact: 'Kathy Baughan'
+				},
+				{
+					id: 3,
+					name: 'New Haven',
+					tel: '(203) 687-9900',
+					contact: 'Fleur Tebbet'
+				},
+				{
+					id: 4,
+					name: 'Hong Kong',
+					tel: '(430) 709-4011',
+					contact: 'Rodolph Tofful'
+				},
+				{
+					id: 5,
+					name: 'Ahmedabad',
+					tel: '(330) 777-3240',
+					contact: 'Helenka Killely'
+				},
+				{
+					id: 6,
+					name: 'Amsterdam',
+					tel: '(020) 333-0987',
+					contact: 'Mariann Rumble'
+				},
+				{
+					id: 7,
+					name: 'Beverly Hills',
+					tel: '(123) 333-0987',
+					contact: 'Kathy Baughan'
+				},
+				{
+					id: 8,
+					name: 'New Haven',
+					tel: '(203) 687-9900',
+					contact: 'Fleur Tebbet'
+				},
+				{
+					id: 9,
+					name: 'Hong Kong',
+					tel: '(430) 709-4011',
+					contact: 'Rodolph Tofful'
+				},
+				{
+					id: 10,
+					name: 'Ahmedabad',
+					tel: '(330) 777-3240',
+					contact: 'Helenka Killely'
+				},
+				{
+					id: 11,
+					name: 'Amsterdam',
+					tel: '(020) 333-0987',
+					contact: 'Mariann Rumble'
+				},
+				{
+					id: 12,
+					name: 'Beverly Hills',
+					tel: '(123) 333-0987',
+					contact: 'Kathy Baughan'
+				},
+				{
+					id: 13,
+					name: 'New Haven',
+					tel: '(203) 687-9900',
+					contact: 'Fleur Tebbet'
+				},
+				{
+					id: 14,
+					name: 'Hong Kong',
+					tel: '(430) 709-4011',
+					contact: 'Rodolph Tofful'
+				},
+				{
+					id: 15,
+					name: 'Ahmedabad',
+					tel: '(330) 777-3240',
+					contact: 'Helenka Killely'
+				},
+				{
+					id: 16,
+					name: 'Amsterdam',
+					tel: '(020) 333-0987',
+					contact: 'Mariann Rumble'
+				},
+				{
+					id: 17,
+					name: 'Beverly Hills',
+					tel: '(123) 333-0987',
+					contact: 'Kathy Baughan'
+				},
+				{
+					id: 18,
+					name: 'New Haven',
+					tel: '(203) 687-9900',
+					contact: 'Fleur Tebbet'
+				},
+				{
+					id: 19,
+					name: 'Hong Kong',
+					tel: '(430) 709-4011',
+					contact: 'Rodolph Tofful'
+				},
+				{
+					id: 20,
+					name: 'Ahmedabad',
+					tel: '(330) 777-3240',
+					contact: 'Helenka Killely'
+				}
+			]
+		};
+	},
+	template: `
+	<v-table :headers="headers" :items="items" :height="200" fixed-header />
+	`
+});

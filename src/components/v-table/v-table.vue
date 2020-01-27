@@ -1,36 +1,39 @@
 <template>
-	<table class="v-table">
-		<table-header
-			:headers="_headers"
-			:sort-desc="_sortDesc"
-			:sort-by="_sortBy"
-			:show-select="showSelect"
-			:some-items-selected="someItemsSelected"
-			:all-items-selected="allItemsSelected"
-			@toggle-select-all="onToggleSelectAll"
-			@update:sort-by="onUpdateSortBy"
-			@update:sort-desc="onUpdateSortDesc"
-		>
-			<template v-for="header in _headers" #[`header.${header.value}`]>
-				<slot :header="header" :name="`header.${header.value}`" />
-			</template>
-		</table-header>
-		<tbody>
-			<table-row
-				v-for="item in _items"
+	<div class="v-table" :style="styles">
+		<table>
+			<table-header
 				:headers="_headers"
-				:item="item"
-				:key="item[itemKey]"
+				:sort-desc="_sortDesc"
+				:sort-by="_sortBy"
 				:show-select="showSelect"
-				:is-selected="getSelectedState(item)"
-				@item-selected="onItemSelected"
+				:some-items-selected="someItemsSelected"
+				:all-items-selected="allItemsSelected"
+				:fixed="fixedHeader"
+				@toggle-select-all="onToggleSelectAll"
+				@update:sort-by="onUpdateSortBy"
+				@update:sort-desc="onUpdateSortDesc"
 			>
-				<template v-for="header in _headers" #[`item.${header.value}`]>
-					<slot :item="item" :name="`item.${header.value}`" />
+				<template v-for="header in _headers" #[`header.${header.value}`]>
+					<slot :header="header" :name="`header.${header.value}`" />
 				</template>
-			</table-row>
-		</tbody>
-	</table>
+			</table-header>
+			<tbody>
+				<table-row
+					v-for="item in _items"
+					:headers="_headers"
+					:item="item"
+					:key="item[itemKey]"
+					:show-select="showSelect"
+					:is-selected="getSelectedState(item)"
+					@item-selected="onItemSelected"
+				>
+					<template v-for="header in _headers" #[`item.${header.value}`]>
+						<slot :item="item" :name="`item.${header.value}`" />
+					</template>
+				</table-row>
+			</tbody>
+		</table>
+	</div>
 </template>
 
 <script lang="ts">
@@ -85,6 +88,14 @@ export default createComponent({
 		selection: {
 			type: Array as () => any[],
 			default: () => []
+		},
+		fixedHeader: {
+			type: Boolean,
+			default: false
+		},
+		height: {
+			type: Number,
+			default: false
 		}
 	},
 	setup(props, { slots, emit }) {
@@ -143,18 +154,33 @@ export default createComponent({
 			return props.selection.length > 0 && allItemsSelected.value === false;
 		});
 
+		type Styles = {
+			height?: string;
+		};
+
+		const styles = computed<object>(() => {
+			const styles: Styles = {};
+
+			if (props.height) {
+				styles.height = props.height + 'px';
+			}
+
+			return styles;
+		});
+
 		return {
 			_headers,
 			_items,
 			_sortBy,
 			_sortDesc,
+			allItemsSelected,
+			getSelectedState,
+			onItemSelected,
+			onToggleSelectAll,
 			onUpdateSortBy,
 			onUpdateSortDesc,
-			onItemSelected,
-			getSelectedState,
-			allItemsSelected,
 			someItemsSelected,
-			onToggleSelectAll
+			styles
 		};
 
 		function onUpdateSortBy(value: string) {
@@ -203,8 +229,13 @@ export default createComponent({
 
 <style lang="scss" scoped>
 .v-table {
-	border-spacing: 0;
-	width: 100%;
+	position: relative;
+	overflow: auto;
+
+	table {
+		border-spacing: 0;
+		width: 100%;
+	}
 
 	::v-deep {
 		.align-left {
