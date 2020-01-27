@@ -39,5 +39,10 @@ export default createComponent({
 
 <style lang="scss" scoped>
 .v-table_table-row {
+	td {
+		border-bottom: 1px solid var(--table-row-border-color);
+		height: 48px;
+		padding: 0 16px;
+	}
 }
 </style>

@@ -169,7 +169,7 @@ export const customRow = () => ({
 		:items="items"
 	>
 		<template #item.name="{ item }">
-			<v-button>{{ item.name }}</v-button>
+			<v-button x-small>{{ item.name }}</v-button>
 		</template>
 	</v-table>
 	`

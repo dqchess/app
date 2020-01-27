@@ -129,6 +129,9 @@ export default createComponent({
 
 <style lang="scss" scoped>
 .v-table {
+	border-spacing: 0;
+	width: 100%;
+
 	::v-deep {
 		.align-left {
 			text-align: left;

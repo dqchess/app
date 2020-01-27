@@ -8,7 +8,7 @@
 				@click="changeSort(header)"
 			>
 				<slot :name="`header.${header.value}`">{{ header.text }}</slot>
-				<v-icon v-if="sortBy === header.value" name="sort" class="sort-icon" />
+				<v-icon v-if="header.sortable" name="sort" class="sort-icon" small />
 			</th>
 		</tr>
 	</thead>
@@ -87,11 +87,36 @@ export default createComponent({
 	.sortable {
 		cursor: pointer;
 
-		&.sort-asc {
+		.sort-icon {
+			opacity: 0;
+			transform: scaleY(-1);
+			transition: opacity var(--fast) var(--transition);
+		}
+
+		&:hover .sort-icon {
+			opacity: 0.5;
+		}
+
+		&.sort-asc,
+		&.sort-desc {
 			.sort-icon {
-				transform: scaleY(-1);
+				opacity: 1;
 			}
 		}
+
+		&.sort-desc {
+			.sort-icon {
+				transform: scaleY(1);
+			}
+		}
+	}
+
+	th {
+		padding: 0 16px;
+		border-bottom: 1px solid var(--table-head-border-color);
+		height: 48px;
+		font-size: 14px;
+		font-weight: var(--weight-bold);
 	}
 }
 </style>
