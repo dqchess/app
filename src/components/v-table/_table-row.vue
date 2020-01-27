@@ -1,5 +1,8 @@
 <template>
 	<tr class="v-table_table-row">
+		<td v-if="showSelect">
+			<v-checkbox :inputValue="isSelected" @change="toggleSelect" />
+		</td>
 		<td v-for="header in headers" :key="header.value" :class="getClassesForHeader(header)">
 			<slot :name="`item.${header.value}`">{{ item[header.value] }}</slot>
 		</td>
@@ -19,10 +22,18 @@ export default createComponent({
 		item: {
 			type: Object,
 			required: true
+		},
+		showSelect: {
+			type: Boolean,
+			default: false
+		},
+		isSelected: {
+			type: Boolean,
+			default: false
 		}
 	},
-	setup(props) {
-		return { getClassesForHeader };
+	setup(props, { emit }) {
+		return { getClassesForHeader, toggleSelect };
 
 		function getClassesForHeader(header: Header) {
 			const classes: string[] = [];
@@ -32,6 +43,13 @@ export default createComponent({
 			}
 
 			return classes;
+		}
+
+		function toggleSelect() {
+			emit('item-selected', {
+				item: props.item,
+				value: !props.isSelected
+			});
 		}
 	}
 });

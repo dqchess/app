@@ -298,3 +298,72 @@ sort-desc: {{ sortDesc }}</pre>
 	</div>
 	`
 });
+
+export const selectable = () => ({
+	data() {
+		return {
+			headers: [
+				{
+					text: 'Name',
+					value: 'name'
+				},
+				{
+					text: 'Phone',
+					value: 'tel',
+					sortable: false
+				},
+				{
+					text: 'Contact',
+					value: 'contact'
+				}
+			],
+			items: [
+				{
+					id: 1,
+					name: 'Amsterdam',
+					tel: '(020) 333-0987',
+					contact: 'Mariann Rumble'
+				},
+				{
+					id: 2,
+					name: 'Beverly Hills',
+					tel: '(123) 333-0987',
+					contact: 'Kathy Baughan'
+				},
+				{
+					id: 3,
+					name: 'New Haven',
+					tel: '(203) 687-9900',
+					contact: 'Fleur Tebbet'
+				},
+				{
+					id: 4,
+					name: 'Hong Kong',
+					tel: '(430) 709-4011',
+					contact: 'Rodolph Tofful'
+				},
+				{
+					id: 5,
+					name: 'Ahmedabad',
+					tel: '(330) 777-3240',
+					contact: 'Helenka Killely'
+				}
+			],
+			selection: []
+		};
+	},
+	template: `
+		<div>
+		<v-table
+			:headers="headers"
+			:items="items"
+			item-key="id"
+			v-model="selection"
+			show-select
+		/>
+		<pre style="max-width: max-content; margin-top: 20px; background-color: #eee; font-family: monospace; padding: 0.5rem; border-radius: 8px;">
+selection: {{ selection }}
+		</pre>
+	</div>
+	`
+});

@@ -8,3 +8,8 @@ export type HeaderRaw = {
 };
 
 export type Header = Required<HeaderRaw>;
+
+export type ItemSelectEvent = {
+	value: boolean;
+	item: any;
+};

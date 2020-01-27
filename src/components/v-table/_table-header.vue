@@ -1,6 +1,9 @@
 <template>
 	<thead class="v-table_table-header">
 		<tr>
+			<th v-if="showSelect">
+				<v-checkbox />
+			</th>
 			<th
 				v-for="header in headers"
 				:key="header.value"
@@ -31,6 +34,10 @@ export default createComponent({
 		sortDesc: {
 			type: Boolean,
 			required: true
+		},
+		showSelect: {
+			type: Boolean,
+			default: false
 		}
 	},
 	setup(props, { emit }) {

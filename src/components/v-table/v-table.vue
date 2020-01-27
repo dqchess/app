@@ -4,6 +4,7 @@
 			:headers="_headers"
 			:sort-desc="_sortDesc"
 			:sort-by="_sortBy"
+			:show-select="showSelect"
 			@update:sort-by="onUpdateSortBy"
 			@update:sort-desc="onUpdateSortDesc"
 		>
@@ -13,10 +14,13 @@
 		</table-header>
 		<tbody>
 			<table-row
-				v-for="(item, index) in _items"
+				v-for="item in _items"
 				:headers="_headers"
 				:item="item"
-				:key="index"
+				:key="item[itemKey]"
+				:show-select="showSelect"
+				:is-selected="getSelectedState(item)"
+				@item-selected="onItemSelected"
 			>
 				<template v-for="header in _headers" #[`item.${header.value}`]>
 					<slot :item="item" :name="`item.${header.value}`" />
@@ -29,10 +33,10 @@
 <script lang="ts">
 import { VNode } from 'vue';
 import { createComponent, computed, ref, watch, Ref } from '@vue/composition-api';
-import { Header, HeaderRaw } from './types';
+import { Header, HeaderRaw, ItemSelectEvent } from './types';
 import TableHeader from './_table-header.vue';
 import TableRow from './_table-row.vue';
-import { sortBy } from 'lodash';
+import { sortBy, clone } from 'lodash';
 
 const HeaderDefaults: Header = {
 	text: '',
@@ -46,6 +50,10 @@ export default createComponent({
 		TableHeader,
 		TableRow
 	},
+	model: {
+		prop: 'selection',
+		event: 'select'
+	},
 	props: {
 		headers: {
 			type: Array as () => HeaderRaw[],
@@ -55,6 +63,10 @@ export default createComponent({
 			type: Array as () => object[],
 			required: true
 		},
+		itemKey: {
+			type: String,
+			default: 'id'
+		},
 		sortBy: {
 			type: String,
 			default: null
@@ -62,6 +74,14 @@ export default createComponent({
 		sortDesc: {
 			type: Boolean,
 			default: false
+		},
+		showSelect: {
+			type: Boolean,
+			default: false
+		},
+		selection: {
+			type: Array as () => any[],
+			default: []
 		}
 	},
 	setup(props, { slots, emit }) {
@@ -93,7 +113,7 @@ export default createComponent({
 		});
 
 		/**
-		 * Items sorted based on sort-by and sort-desc props and with unique key added in $key
+		 * Items sorted based on sort-by and sort-desc props
 		 */
 		const _items = computed<object[]>(() => {
 			const fallbackSortHeader: Header | undefined = _headers.value.find(
@@ -112,7 +132,16 @@ export default createComponent({
 			return itemsSorted;
 		});
 
-		return { _headers, _items, _sortBy, _sortDesc, onUpdateSortBy, onUpdateSortDesc };
+		return {
+			_headers,
+			_items,
+			_sortBy,
+			_sortDesc,
+			onUpdateSortBy,
+			onUpdateSortDesc,
+			onItemSelected,
+			getSelectedState
+		};
 
 		function onUpdateSortBy(value: string) {
 			_sortBy.value = value;
@@ -122,6 +151,29 @@ export default createComponent({
 		function onUpdateSortDesc(value: boolean) {
 			_sortDesc.value = value;
 			emit('update:sort-desc', value);
+		}
+
+		function onItemSelected(event: ItemSelectEvent) {
+			emit('item-selected', event);
+
+			const selection: any[] = clone(props.selection);
+
+			if (event.value === true) {
+				selection.push(event.item);
+			} else {
+				const itemIndex: number = selection.findIndex(
+					(item: any) => item[props.itemKey] === event.item[props.itemKey]
+				);
+
+				selection.splice(itemIndex, 1);
+			}
+
+			emit('select', selection);
+		}
+
+		function getSelectedState(item: any) {
+			const selectedKeys = props.selection.map((item: any) => item[props.itemKey]);
+			return selectedKeys.includes(item[props.itemKey]);
 		}
 	}
 });
