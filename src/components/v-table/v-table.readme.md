@@ -40,6 +40,7 @@
 | `value`*   | Name of the object property that holds the value of the item | --      |
 | `align`    | Text alignment of value. One of `left`, `center`, `right`    | `left`  |
 | `sortable` | If the column can be sorted on                               | `true`  |
+| `width`    | Custom width of the column in px                             | --      |
 
 ## Custom element / component for header
 

@@ -6,7 +6,7 @@
 		<td
 			class="cell"
 			v-for="header in headers"
-			:class="getClassesForHeader(header)"
+			:class="getClassesForCell(header)"
 			:key="header.value"
 		>
 			<slot :name="`item.${header.value}`" :item="item">{{ item[header.value] }}</slot>
@@ -42,9 +42,9 @@ export default createComponent({
 		}
 	},
 	setup(props, { emit }) {
-		return { getClassesForHeader, toggleSelect };
+		return { getClassesForCell, toggleSelect };
 
-		function getClassesForHeader(header: Header) {
+		function getClassesForCell(header: Header) {
 			const classes: string[] = [];
 
 			if (header.align) {

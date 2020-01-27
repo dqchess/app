@@ -9,9 +9,10 @@
 				/>
 			</th>
 			<th
-				v-for="header in headers"
+				v-for="(header, index) in headers"
 				:key="header.value"
 				:class="getClassesForHeader(header)"
+				:style="getStyleForHeader(header, index)"
 				class="cell"
 				@click="changeSort(header)"
 			>
@@ -58,7 +59,7 @@ export default createComponent({
 		}
 	},
 	setup(props, { emit }) {
-		return { getClassesForHeader, changeSort, toggleSelectAll };
+		return { getClassesForHeader, getStyleForHeader, changeSort, toggleSelectAll };
 
 		function getClassesForHeader(header: Header) {
 			const classes: string[] = [];
@@ -80,6 +81,20 @@ export default createComponent({
 			}
 
 			return classes;
+		}
+
+		function getStyleForHeader(header: Header, index: number) {
+			if (header.width !== null) {
+				let width: string;
+
+				if (index === props.headers.length - 1) {
+					width = 'auto';
+				} else {
+					width = header.width + 'px';
+				}
+
+				return { width };
+			}
 		}
 
 		/**

@@ -42,7 +42,8 @@ describe('Table', () => {
 				text: 'Column 1',
 				value: 'col1',
 				sortable: true,
-				align: 'left'
+				align: 'left',
+				width: null
 			}
 		]);
 	});

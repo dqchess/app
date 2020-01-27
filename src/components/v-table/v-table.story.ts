@@ -612,3 +612,67 @@ export const loadingNoRows = () => ({
 });
 
 loadingNoRows.title = 'Loading (No Rows)';
+
+export const columnWidths = () => ({
+	data() {
+		return {
+			headers: [
+				{
+					text: 'Name',
+					value: 'name',
+					width: 150
+				},
+				{
+					text: 'Phone',
+					value: 'tel',
+					width: 150
+				},
+				{
+					text: 'Contact',
+					value: 'contact',
+					width: 250
+				}
+			],
+			items: [
+				{
+					id: 1,
+					name: 'Amsterdam',
+					tel: '(020) 333-0987',
+					contact: 'Mariann Rumble'
+				},
+				{
+					id: 2,
+					name: 'Beverly Hills',
+					tel: '(123) 333-0987',
+					contact: 'Kathy Baughan'
+				},
+				{
+					id: 3,
+					name: 'New Haven',
+					tel: '(203) 687-9900',
+					contact: 'Fleur Tebbet'
+				},
+				{
+					id: 4,
+					name: 'Hong Kong',
+					tel: '(430) 709-4011',
+					contact: 'Rodolph Tofful'
+				},
+				{
+					id: 5,
+					name: 'Ahmedabad',
+					tel: '(330) 777-3240',
+					contact: 'Helenka Killely'
+				}
+			]
+		};
+	},
+	template: `
+		<div>
+		<v-table
+			:headers="headers"
+			:items="items"
+		/>
+	</div>
+	`
+});

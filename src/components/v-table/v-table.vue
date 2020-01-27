@@ -59,7 +59,8 @@ const HeaderDefaults: Header = {
 	text: '',
 	value: '',
 	align: 'left',
-	sortable: true
+	sortable: true,
+	width: null
 };
 
 export default createComponent({
@@ -254,6 +255,7 @@ export default createComponent({
 	table {
 		border-spacing: 0;
 		width: 100%;
+		table-layout: fixed;
 	}
 
 	&.loading {

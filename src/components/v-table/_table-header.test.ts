@@ -169,6 +169,27 @@ describe('Table / Header', () => {
 		expect(component.find('th:nth-child(3)').classes()).toContain('align-right');
 	});
 
+	it('Generates the correct inline styles for column widths', async () => {
+		component.setProps({
+			headers: [],
+			sortDesc: false
+		});
+
+		await component.vm.$nextTick();
+
+		const styles = (component.vm as any).getStyleForHeader({
+			text: 'Col2',
+			value: 'col2',
+			align: 'center',
+			sortable: true,
+			width: 150
+		});
+
+		expect(styles).toEqual({
+			width: '150px'
+		});
+	});
+
 	it('Renders the provided element in the nested scoped slot for the header', async () => {
 		const component = mount(TableHeader, {
 			localVue,
