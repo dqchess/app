@@ -9,6 +9,11 @@ module.exports = {
 		'@storybook/addon-knobs'
 	],
 	webpackFinal: async (config, { configType }) => {
+		config.resolve.alias = {
+			...config.resolve.alias,
+			'@': path.resolve(__dirname, '../src')
+		};
+
 		config.module.rules.push({
 			test: /\.scss$/,
 			use: ['style-loader', 'css-loader', 'sass-loader'],
@@ -19,6 +24,9 @@ module.exports = {
 			test: /\.ts$/,
 			exclude: /node_modules/,
 			use: [
+				{
+					loader: 'babel-loader'
+				},
 				{
 					loader: 'ts-loader',
 					options: {
