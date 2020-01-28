@@ -3,10 +3,10 @@
     "calendar": {
       "calendar": "Calendar",
       "fields": "Fields",
-      "today": "today",
-      "events": "Events",
-      "moreEvents": "and {amount} more...",
-      "noEvents": "no events yet!",
+      "today": "astăzi",
+      "events": "Evenimente",
+      "moreEvents": "adaugă încă {amount}...",
+      "noEvents": "niciun eveniment!",
       "date": "Date",
       "datetime": "Datetime",
       "time": "Time",
@@ -14,26 +14,26 @@
       "color": "Color"
     },
     "cards": {
-      "cards": "Cards",
+      "cards": "Carduri",
       "title": "Titlu",
-      "subtitle": "Subtitle",
-      "src": "Image Source",
-      "content": "Body Content",
-      "fit": "Fit"
+      "subtitle": "Subtitlu",
+      "src": "Sursa Imaginii",
+      "content": "Conținut corp",
+      "fit": "Potrivire"
     },
     "tabular": {
-      "tabular": "Table",
+      "tabular": "Tabel",
       "fields": "Fields"
     },
     "timeline": {
-      "timeline": "Timeline",
+      "timeline": "Cronologie",
       "fields": "Fields",
-      "today": "today",
-      "events": "Events",
-      "moreEvents": "and {amount} more...",
-      "noEvents": "no events yet!",
+      "today": "astăzi",
+      "events": "Evenimente",
+      "moreEvents": "adaugă încă {amount}...",
+      "noEvents": "niciun eveniment!",
       "date": "Date",
-      "content": "Content",
+      "content": "Conţinut",
       "title": "Titlu",
       "color": "Color"
     }
