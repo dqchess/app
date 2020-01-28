@@ -6,6 +6,7 @@
 				:sort-desc="_sortDesc"
 				:sort-by="_sortBy"
 				:show-select="showSelect"
+				:show-resize="showResize"
 				:some-items-selected="someItemsSelected"
 				:all-items-selected="allItemsSelected"
 				:fixed="fixedHeader"
@@ -94,6 +95,10 @@ export default createComponent({
 			default: false
 		},
 		showSelect: {
+			type: Boolean,
+			default: false
+		},
+		showResize: {
 			type: Boolean,
 			default: false
 		},

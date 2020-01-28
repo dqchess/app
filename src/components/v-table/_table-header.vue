@@ -18,14 +18,21 @@
 			>
 				<slot :name="`header.${header.value}`" :header="header">{{ header.text }}</slot>
 				<v-icon v-if="header.sortable" name="sort" class="sort-icon" small />
+				<div
+					class="drag-handle"
+					v-if="showResize && index !== headers.length - 1"
+					@mousedown="onDragHandleMouseDown(header, $event)"
+				/>
 			</th>
 		</tr>
 	</thead>
 </template>
 
 <script lang="ts">
-import { createComponent } from '@vue/composition-api';
+import { createComponent, ref, onMounted, onBeforeUnmount } from '@vue/composition-api';
+import useEventListener from '@/compositions/event-listener';
 import { Alignment, Header } from './types';
+import { MouseEvent } from 'react';
 
 export default createComponent({
 	props: {
@@ -45,6 +52,10 @@ export default createComponent({
 			type: Boolean,
 			default: false
 		},
+		showResize: {
+			type: Boolean,
+			default: false
+		},
 		someItemsSelected: {
 			type: Boolean,
 			default: false
@@ -59,7 +70,20 @@ export default createComponent({
 		}
 	},
 	setup(props, { emit }) {
-		return { getClassesForHeader, getStyleForHeader, changeSort, toggleSelectAll };
+		const dragging = ref<boolean>(false);
+		const dragStartX = ref<number>(0);
+		const dragStartWidth = ref<number>(0);
+
+		useEventListener<Window>(window, 'mousemove', onMouseMove);
+		useEventListener<Window>(window, 'mouseup', onMouseUp);
+
+		return {
+			getClassesForHeader,
+			getStyleForHeader,
+			changeSort,
+			toggleSelectAll,
+			onDragHandleMouseDown
+		};
 
 		function getClassesForHeader(header: Header) {
 			const classes: string[] = [];
@@ -121,6 +145,24 @@ export default createComponent({
 		function toggleSelectAll() {
 			emit('toggle-select-all', !props.allItemsSelected);
 		}
+
+		function onDragHandleMouseDown(header: Header, event: MouseEvent) {
+			dragging.value = true;
+			dragStartX.value = event.pageX;
+			dragStartWidth.value = event.target.offsetParent.offsetWidth;
+		}
+
+		function onMouseMove(event: MouseEvent) {
+			if (dragging.value === true) {
+				console.log(dragStartWidth.value + (event.pageX - dragStartX.value));
+			}
+		}
+
+		function onMouseUp(event: MouseEvent) {
+			if (dragging.value === true) {
+				dragging.value = false;
+			}
+		}
 	}
 });
 </script>
@@ -161,6 +203,7 @@ export default createComponent({
 		height: 48px;
 		font-size: 14px;
 		font-weight: var(--weight-bold);
+		position: relative;
 	}
 
 	.select {
@@ -171,6 +214,25 @@ export default createComponent({
 	.fixed th {
 		position: sticky;
 		top: 0;
+	}
+
+	.drag-handle {
+		cursor: ew-resize;
+		width: 5px;
+		height: 100%;
+		position: absolute;
+		right: 0;
+		top: 0;
+
+		&::after {
+			content: '';
+			display: block;
+			width: 1px;
+			position: relative;
+			height: 100%;
+			left: 2px;
+			background-color: black;
+		}
 	}
 }
 </style>
