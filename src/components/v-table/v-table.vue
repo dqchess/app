@@ -11,6 +11,7 @@
 				:all-items-selected="allItemsSelected"
 				:fixed="fixedHeader"
 				@toggle-select-all="onToggleSelectAll"
+				@update:headers="onUpdateHeaders"
 				@update:sort-by="onUpdateSortBy"
 				@update:sort-desc="onUpdateSortDesc"
 			>
@@ -49,11 +50,11 @@
 
 <script lang="ts">
 import { VNode } from 'vue';
-import { createComponent, computed, ref, watch, Ref } from '@vue/composition-api';
+import { createComponent, computed, ref, watch, Ref, PropType } from '@vue/composition-api';
 import { Header, HeaderRaw, ItemSelectEvent } from './types';
 import TableHeader from './_table-header.vue';
 import TableRow from './_table-row.vue';
-import { sortBy, clone } from 'lodash';
+import { sortBy, clone, mapValues } from 'lodash';
 
 const { i18n } = require('@/lang/');
 
@@ -76,11 +77,11 @@ export default createComponent({
 	},
 	props: {
 		headers: {
-			type: Array as () => HeaderRaw[],
+			type: Array as PropType<HeaderRaw[]>,
 			required: true
 		},
 		items: {
-			type: Array as () => object[],
+			type: Array as PropType<object[]>,
 			required: true
 		},
 		itemKey: {
@@ -104,7 +105,7 @@ export default createComponent({
 			default: false
 		},
 		selection: {
-			type: Array as () => any[],
+			type: Array as PropType<any[]>,
 			default: () => []
 		},
 		fixedHeader: {
@@ -125,10 +126,19 @@ export default createComponent({
 		}
 	},
 	setup(props, { slots, emit }) {
-		// We keep a manual copy of the sort status instead of always relying on the parent in order
+		// We keep a manual copy of the sort status / headers instead of always relying on the parent in order
 		// to support sorting for inline tables without any additional state management.
 		let _sortBy = ref<string | null>(props.sortBy);
 		let _sortDesc = ref<Boolean>(props.sortDesc);
+		/**
+		 * Headers prop merged with the default values for each Header
+		 */
+		let _headers = ref<Header[]>(
+			props.headers.map((header: HeaderRaw) => ({
+				...HeaderDefaults,
+				...header
+			}))
+		);
 
 		// This does mean that we have to watch the props, and update the local state manually on
 		// changes of the props.
@@ -142,15 +152,14 @@ export default createComponent({
 			(newSort: boolean) => (_sortDesc.value = props.sortDesc)
 		);
 
-		/**
-		 * Headers prop merged with the default values for each Header
-		 */
-		const _headers = computed<Header[]>(() => {
-			return props.headers.map((header: HeaderRaw) => ({
-				...HeaderDefaults,
-				...header
-			}));
-		});
+		watch(
+			() => props.headers,
+			(newHeaders: HeaderRaw[]) =>
+				(_headers.value = newHeaders.map((header: HeaderRaw) => ({
+					...HeaderDefaults,
+					...header
+				})))
+		);
 
 		/**
 		 * Items sorted based on sort-by and sort-desc props
@@ -206,7 +215,8 @@ export default createComponent({
 			onUpdateSortBy,
 			onUpdateSortDesc,
 			someItemsSelected,
-			styles
+			styles,
+			onUpdateHeaders
 		};
 
 		function onUpdateSortBy(value: string) {
@@ -248,6 +258,20 @@ export default createComponent({
 			} else {
 				emit('select', []);
 			}
+		}
+
+		function onUpdateHeaders(newHeaders: Header[]) {
+			_headers.value = newHeaders;
+
+			// We'll update the passed in headers, so we don't send the defaults up if we don't have to
+			emit(
+				'update:headers',
+				props.headers.map((header: HeaderRaw, index: number) => {
+					return mapValues(header, (value: any, key: keyof Header) => {
+						return newHeaders[index][key];
+					});
+				})
+			);
 		}
 	}
 });

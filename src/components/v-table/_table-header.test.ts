@@ -56,7 +56,7 @@ describe('Table / Header', () => {
 
 		await component.vm.$nextTick();
 
-		component.find('th').trigger('click');
+		component.find('th .content').trigger('click');
 		expect(component.emitted('update:sort-by')[0]).toEqual(['col1']);
 		expect(component.emitted('update:sort-desc')[0]).toEqual([false]);
 
@@ -67,7 +67,7 @@ describe('Table / Header', () => {
 
 		await component.vm.$nextTick();
 
-		component.find('th').trigger('click');
+		component.find('th .content').trigger('click');
 
 		expect(component.emitted('update:sort-desc')[1]).toEqual([true]);
 
@@ -78,7 +78,7 @@ describe('Table / Header', () => {
 
 		await component.vm.$nextTick();
 
-		component.find('th').trigger('click');
+		component.find('th .content').trigger('click');
 		expect(component.emitted('update:sort-by')[1]).toEqual([null]);
 		expect(component.emitted('update:sort-desc')[2]).toEqual([false]);
 	});
@@ -110,7 +110,7 @@ describe('Table / Header', () => {
 
 		await component.vm.$nextTick();
 
-		component.find('th').trigger('click');
+		component.find('th .content').trigger('click');
 
 		expect(component.emitted()).toEqual({});
 	});
@@ -211,7 +211,7 @@ describe('Table / Header', () => {
 			}
 		});
 
-		expect(component.find('.v-table_table-header th:nth-child(2) > *').html()).toEqual(
+		expect(component.find('.v-table_table-header th:nth-child(2) .content > *').html()).toEqual(
 			'<p>Column 2</p>'
 		);
 	});

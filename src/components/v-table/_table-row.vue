@@ -15,13 +15,13 @@
 </template>
 
 <script lang="ts">
-import { createComponent } from '@vue/composition-api';
+import { createComponent, PropType } from '@vue/composition-api';
 import { Header } from './types';
 
 export default createComponent({
 	props: {
 		headers: {
-			type: Array as () => Header[],
+			type: Array as PropType<Header[]>,
 			required: true
 		},
 		item: {
@@ -71,6 +71,9 @@ export default createComponent({
 		height: 48px;
 		padding: 0 16px;
 		background-color: var(--table-background-color);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.select {

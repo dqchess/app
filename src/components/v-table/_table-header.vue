@@ -14,13 +14,15 @@
 				:class="getClassesForHeader(header)"
 				:style="getStyleForHeader(header, index)"
 				class="cell"
-				@click="changeSort(header)"
 			>
-				<slot :name="`header.${header.value}`" :header="header">{{ header.text }}</slot>
-				<v-icon v-if="header.sortable" name="sort" class="sort-icon" small />
-				<div
+				<div class="content" @click="changeSort(header)">
+					<slot :name="`header.${header.value}`" :header="header">{{ header.text }}</slot>
+					<v-icon v-if="header.sortable" name="sort" class="sort-icon" small />
+				</div>
+				<span
 					class="drag-handle"
 					v-if="showResize && index !== headers.length - 1"
+					@click.stop
 					@mousedown="onDragHandleMouseDown(header, $event)"
 				/>
 			</th>
@@ -29,14 +31,15 @@
 </template>
 
 <script lang="ts">
-import { createComponent, ref, onMounted, onBeforeUnmount } from '@vue/composition-api';
+import { createComponent, ref, onMounted, onBeforeUnmount, PropType } from '@vue/composition-api';
 import useEventListener from '@/compositions/event-listener';
 import { Alignment, Header } from './types';
+import { throttle, clone } from 'lodash';
 
 export default createComponent({
 	props: {
 		headers: {
-			type: Array as () => Header[],
+			type: Array as PropType<Header[]>,
 			required: true
 		},
 		sortDesc: {
@@ -72,9 +75,10 @@ export default createComponent({
 		const dragging = ref<boolean>(false);
 		const dragStartX = ref<number>(0);
 		const dragStartWidth = ref<number>(0);
+		const dragHeader = ref<Header>(null);
 
-		useEventListener<Window>(window, 'mousemove', onMouseMove);
-		useEventListener<Window>(window, 'mouseup', onMouseUp);
+		useEventListener(window, 'mousemove', throttle(onMouseMove, 20));
+		useEventListener(window, 'mouseup', onMouseUp);
 
 		return {
 			getClassesForHeader,
@@ -127,6 +131,7 @@ export default createComponent({
 		 */
 		function changeSort(header: Header) {
 			if (header.sortable === false) return;
+			if (dragging.value === true) return;
 
 			if (header.value === props.sortBy) {
 				if (props.sortDesc === false) {
@@ -146,15 +151,30 @@ export default createComponent({
 		}
 
 		function onDragHandleMouseDown(header: Header, event: MouseEvent) {
+			const target = event.target as HTMLDivElement;
+			const parent = target.parentElement as HTMLTableHeaderCellElement;
+
 			dragging.value = true;
 			dragStartX.value = event.pageX;
-			dragStartWidth.value = ((event.target as HTMLDivElement)
-				.offsetParent as HTMLTableHeaderCellElement).offsetWidth;
+			dragStartWidth.value = parent.offsetWidth;
+			dragHeader.value = header;
 		}
 
 		function onMouseMove(event: MouseEvent) {
 			if (dragging.value === true) {
-				console.log(dragStartWidth.value + (event.pageX - dragStartX.value));
+				const newWidth = dragStartWidth.value + (event.pageX - dragStartX.value);
+				const currentHeaders = clone(props.headers);
+				const newHeaders = currentHeaders.map((existing: Header) => {
+					if (existing.value === dragHeader.value?.value) {
+						return {
+							...existing,
+							width: Math.max(50, newWidth)
+						};
+					}
+
+					return existing;
+				});
+				emit('update:headers', newHeaders);
 			}
 		}
 
@@ -169,6 +189,16 @@ export default createComponent({
 
 <style lang="scss" scoped>
 .v-table_table-header {
+	.cell {
+		background-color: var(--table-background-color);
+		padding: 0 16px;
+		border-bottom: 1px solid var(--table-head-border-color);
+		height: 48px;
+		font-size: 14px;
+		font-weight: var(--weight-bold);
+		position: relative;
+	}
+
 	.sortable {
 		cursor: pointer;
 
@@ -196,18 +226,8 @@ export default createComponent({
 		}
 	}
 
-	.cell {
-		background-color: var(--table-background-color);
-		padding: 0 16px;
-		border-bottom: 1px solid var(--table-head-border-color);
-		height: 48px;
-		font-size: 14px;
-		font-weight: var(--weight-bold);
-		position: relative;
-	}
-
 	.select {
-		width: 24px;
+		width: 40px;
 		padding-right: 0;
 	}
 
@@ -231,7 +251,11 @@ export default createComponent({
 			position: relative;
 			height: 100%;
 			left: 2px;
-			background-color: black;
+			background-color: var(--table-drag-handle);
+		}
+
+		&:hover::after {
+			background-color: var(--table-drag-handle-hover);
 		}
 	}
 }

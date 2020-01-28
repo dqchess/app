@@ -214,7 +214,7 @@ describe('Table', () => {
 
 		await component.vm.$nextTick();
 
-		component.find('th').trigger('click');
+		component.find('th .content').trigger('click');
 
 		expect((component.vm as any)._sortBy).toEqual('col1');
 		expect(component.emitted('update:sort-by')[0]).toEqual(['col1']);
@@ -251,7 +251,7 @@ describe('Table', () => {
 
 		await component.vm.$nextTick();
 
-		component.find('th').trigger('click');
+		component.find('th .content').trigger('click');
 
 		expect((component.vm as any)._sortDesc).toEqual(true);
 		expect(component.emitted('update:sort-desc')[0]).toEqual([true]);

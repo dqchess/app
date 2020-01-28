@@ -734,10 +734,13 @@ export const resizable = () => ({
 	template: `
 		<div>
 		<v-table
-			:headers="headers"
+			:headers.sync="headers"
 			:items="items"
 			show-resize
 		/>
+		<pre style="max-width: max-content; margin-top: 20px; background-color: #eee; font-family: monospace; padding: 0.5rem; border-radius: 8px;">
+headers: {{ headers }}
+</pre>
 	</div>
 	`
 });
