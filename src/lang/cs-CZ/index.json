@@ -69,7 +69,7 @@
     },
     "directus_files": {
       "title": "Title",
-      "tags": "Tags",
+      "tags": "Štítky",
       "location": "Poloha",
       "description": "Popis",
       "filename_download": "Filename Download",
@@ -510,7 +510,7 @@
   "turn_all_off": "Vypnout vše",
   "undo_changes": "Vrátit změny",
   "unique": "Unikátní",
-  "unsaved_changes": "Unsaved Changes",
+  "unsaved_changes": "Neuložené změny",
   "unsaved_changes_copy": "Jste si jisti, že chcete opustit tuto stránku?",
   "update": "Úpravy",
   "update_confirm": "Opravdu chcete aktualizovat {count} položek?",
