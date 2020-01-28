@@ -323,7 +323,7 @@
 			"map_lat_comment": "Map will be centered at this latitude",
 			"map_lng": "Default Longitude",
 			"map_lng_comment": "Map will be centered at this longitude",
-			"height": "Height",
+			"height": "Înălţime",
 			"default_zoom": "Default Zoom",
 			"default_zoom_comment": "Default zoom level of the map",
 			"max_zoom": "Max Zoom",
@@ -495,7 +495,7 @@
 			"deleted": "Deleted"
 		},
 		"tags": {
-			"tags": "Tags",
+			"tags": "Etichete",
 			"alphabetize": "Alphabetize tags",
 			"alphabetize_comment": "Will rearrange tags to be alphabetical",
 			"lowercase": "Force Lowercase",
