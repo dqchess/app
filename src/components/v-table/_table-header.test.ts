@@ -25,15 +25,20 @@ describe('Table / Header', () => {
 						value: 'col1'
 					}
 				],
-				sortDesc: false
+				sort: {
+					by: null,
+					desc: false
+				}
 			}
 		});
 	});
 
 	it('Gets the right classes for the passed props', async () => {
 		component.setProps({
-			sortBy: 'col1',
-			sortDesc: true
+			sort: {
+				by: 'col1',
+				desc: true
+			}
 		});
 
 		await component.vm.$nextTick();
@@ -50,43 +55,50 @@ describe('Table / Header', () => {
 
 	it('Emits the correct update event on sorting changes', async () => {
 		component.setProps({
-			sortBy: null,
-			sortDesc: true
+			sort: {
+				by: null,
+				desc: true
+			}
 		});
 
 		await component.vm.$nextTick();
 
 		component.find('th .content').trigger('click');
-		expect(component.emitted('update:sort-by')[0]).toEqual(['col1']);
-		expect(component.emitted('update:sort-desc')[0]).toEqual([false]);
+		expect(component.emitted('update:sort')[0]).toEqual([{ by: 'col1', desc: false }]);
 
 		component.setProps({
-			sortBy: 'col1',
-			sortDesc: false
+			sort: {
+				by: 'col1',
+				desc: false
+			}
 		});
 
 		await component.vm.$nextTick();
 
 		component.find('th .content').trigger('click');
 
-		expect(component.emitted('update:sort-desc')[1]).toEqual([true]);
+		expect(component.emitted('update:sort')[1]).toEqual([{ by: 'col1', desc: true }]);
 
 		component.setProps({
-			sortBy: 'col1',
-			sortDesc: true
+			sort: {
+				by: 'col1',
+				desc: true
+			}
 		});
 
 		await component.vm.$nextTick();
 
 		component.find('th .content').trigger('click');
-		expect(component.emitted('update:sort-by')[1]).toEqual([null]);
-		expect(component.emitted('update:sort-desc')[2]).toEqual([false]);
+		expect(component.emitted('update:sort')[2]).toEqual([{ by: null, desc: false }]);
 	});
 
 	it('Emits toggle-select-all on checkbox click', async () => {
 		component.setProps({
 			showSelect: true,
-			sortDesc: false
+			sort: {
+				by: null,
+				desc: false
+			}
 		});
 
 		await component.vm.$nextTick();
@@ -104,8 +116,7 @@ describe('Table / Header', () => {
 					value: 'col1',
 					sortable: false
 				}
-			],
-			sortDesc: false
+			]
 		});
 
 		await component.vm.$nextTick();
@@ -130,8 +141,7 @@ describe('Table / Header', () => {
 					align: 'left',
 					sortable: true
 				}
-			],
-			sortDesc: false
+			]
 		});
 
 		await component.vm.$nextTick();
@@ -158,8 +168,7 @@ describe('Table / Header', () => {
 					value: 'col3',
 					align: 'right'
 				}
-			],
-			sortDesc: false
+			]
 		});
 
 		await component.vm.$nextTick();
@@ -204,7 +213,10 @@ describe('Table / Header', () => {
 						value: 'col2'
 					}
 				],
-				sortDesc: false
+				sort: {
+					by: null,
+					desc: false
+				}
 			},
 			scopedSlots: {
 				'header.col2': '<template slot-scope="{header}"><p>{{ header.text }}</p></template>'

@@ -1,4 +1,5 @@
 import { withKnobs } from '@storybook/addon-knobs';
+import { Sort } from './types';
 
 import Vue from 'vue';
 import VTable from './v-table.vue';
@@ -278,8 +279,10 @@ export const sorting = () => ({
 					contact: 'Helenka Killely'
 				}
 			],
-			sortBy: 'name',
-			sortDesc: false
+			sort: {
+				by: 'name',
+				desc: false
+			}
 		};
 	},
 	template: `
@@ -287,13 +290,12 @@ export const sorting = () => ({
 		<v-table
 			:headers="headers"
 			:items="items"
-			:sort-by.sync="sortBy"
-			:sort-desc.sync="sortDesc"
+			:sort.sync="sort"
 		/>
-		<p style="margin-top: 2rem;">Table syncs the sort-by and sort-desc props when using \`sync\` modifier:</p>
+		<p style="margin-top: 2rem;">Table syncs the sort prop when using \`sync\` modifier:</p>
 		<pre style="max-width: max-content; margin-top: 20px; background-color: #eee; font-family: monospace; padding: 0.5rem; border-radius: 8px;">
-sort-by: {{ sortBy }}
-sort-desc: {{ sortDesc }}</pre>
+sort: {{ sort }}
+</pre>
 		<p style="margin-top: 2rem;">Defaults to first sortable column that's passed in (\`name\` in this example)</p>
 	</div>
 	`
@@ -742,5 +744,93 @@ export const resizable = () => ({
 headers: {{ headers }}
 </pre>
 	</div>
+	`
+});
+
+export const serverSort = () => ({
+	data() {
+		return {
+			headers: [
+				{
+					text: 'Name',
+					value: 'name',
+					width: 150
+				},
+				{
+					text: 'Phone',
+					value: 'tel',
+					width: 150
+				},
+				{
+					text: 'Contact',
+					value: 'contact',
+					width: 250
+				}
+			],
+			items: [
+				{
+					id: 1,
+					name: 'Amsterdam',
+					tel: '(020) 333-0987',
+					contact: 'Mariann Rumble'
+				},
+				{
+					id: 2,
+					name: 'Beverly Hills',
+					tel: '(123) 333-0987',
+					contact: 'Kathy Baughan'
+				},
+				{
+					id: 3,
+					name: 'New Haven',
+					tel: '(203) 687-9900',
+					contact: 'Fleur Tebbet'
+				},
+				{
+					id: 4,
+					name: 'Hong Kong',
+					tel: '(430) 709-4011',
+					contact: 'Rodolph Tofful'
+				},
+				{
+					id: 5,
+					name: 'Ahmedabad',
+					tel: '(330) 777-3240',
+					contact: 'Helenka Killely'
+				}
+			],
+			sort: {
+				by: 'id',
+				desc: false
+			},
+			loading: false
+		};
+	},
+	methods: {
+		onSort(sort: Sort) {
+			const self: any = this;
+			self.loading = true;
+
+			setTimeout(() => {
+				self.items = [...self.items].sort((a, b) => (a[sort.by!] > b[sort.by!] ? 1 : -1));
+
+				if (sort.desc === true) {
+					self.items.reverse();
+				}
+
+				self.sort = sort;
+				self.loading = false;
+			}, 2000);
+		}
+	},
+	template: `
+		<v-table
+			server-sort
+			:headers.sync="headers"
+			:items="items"
+			:loading="loading"
+			:sort="sort"
+			@update:sort="onSort"
+		/>
 	`
 });

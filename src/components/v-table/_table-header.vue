@@ -33,7 +33,7 @@
 <script lang="ts">
 import { createComponent, ref, onMounted, onBeforeUnmount, PropType } from '@vue/composition-api';
 import useEventListener from '@/compositions/event-listener';
-import { Alignment, Header } from './types';
+import { Alignment, Header, Sort } from './types';
 import { throttle, clone } from 'lodash';
 
 export default createComponent({
@@ -42,13 +42,9 @@ export default createComponent({
 			type: Array as PropType<Header[]>,
 			required: true
 		},
-		sortDesc: {
-			type: Boolean,
+		sort: {
+			type: Object as PropType<Sort>,
 			required: true
-		},
-		sortBy: {
-			type: String,
-			default: null
 		},
 		showSelect: {
 			type: Boolean,
@@ -100,8 +96,8 @@ export default createComponent({
 				classes.push('sortable');
 			}
 
-			if (props.sortBy === header.value) {
-				if (props.sortDesc === false) {
+			if (props.sort.by === header.value) {
+				if (props.sort.desc === false) {
 					classes.push('sort-asc');
 				} else {
 					classes.push('sort-desc');
@@ -134,16 +130,23 @@ export default createComponent({
 			if (header.sortable === false) return;
 			if (dragging.value === true) return;
 
-			if (header.value === props.sortBy) {
-				if (props.sortDesc === false) {
-					emit('update:sort-desc', true);
+			if (header.value === props.sort.by) {
+				if (props.sort.desc === false) {
+					emit('update:sort', {
+						by: props.sort.by,
+						desc: true
+					});
 				} else {
-					emit('update:sort-desc', false);
-					emit('update:sort-by', null);
+					emit('update:sort', {
+						by: null,
+						desc: false
+					});
 				}
 			} else {
-				emit('update:sort-by', header.value);
-				emit('update:sort-desc', false);
+				emit('update:sort', {
+					by: header.value,
+					desc: false
+				});
 			}
 		}
 

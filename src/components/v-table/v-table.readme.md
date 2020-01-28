@@ -117,8 +117,7 @@ export default createComponent({
 | `headers`*     | What columns to show in the table. Supports the `.sync` modifier    | --      |
 | `items`*       | The individual items to render as rows                              | --      |
 | `item-key`     | Primary key of the item. Used for keys / selections                 | `id`    |
-| `sort-by`      | What column to sort by. Supports the `.sync` modifier               | --      |
-| `sort-desc`    | Sort descending instead of ascending. Supports the `.sync` modifier | `false` |
+| `sort-by`      | What column / order to sort by. Supports the `.sync` modifier       | --      |
 | `show-select`  | Show checkboxes                                                     | `false` |
 | `show-resize`  | Show resize handlers                                                | `false` |
 | `selection`    | What items are selected. Can be used with `v-model` as well         | `[]`    |
@@ -127,16 +126,16 @@ export default createComponent({
 
 ## Events
 
-| Event              | Description                                    | Value                           |
-|--------------------|------------------------------------------------|---------------------------------|
-| `update:sort-by`   | `.sync` event for `sort-by` prop               | `string`                        |
-| `update:sort-desc` | `.sync` event for `sort-desc` prop             | `boolean`                       |
-| `update:headers`   | `.sync` event for `headers` prop               | `HeaderRaw[]`                   |
-| `item-selected`    | Emitted when an item is selected or deselected | `{ item: any, value: boolean }` |
-| `select`           | Emitted when selected items change             | `any[]`                         |
+| Event            | Description                                    | Value                           |
+|------------------|------------------------------------------------|---------------------------------|
+| `update:sort`    | `.sync` event for `sort` prop                  | `{ by: string, desc: boolean }` |
+| `update:headers` | `.sync` event for `headers` prop               | `HeaderRaw[]`                   |
+| `item-selected`  | Emitted when an item is selected or deselected | `{ item: any, value: boolean }` |
+| `select`         | Emitted when selected items change             | `any[]`                         |
 
 ## Slots
 
-| Slot           | Description                   |
-|----------------|-------------------------------|
-| `item.[value]` | Override individual row cells |
+| Slot             | Description                      |
+|------------------|----------------------------------|
+| `header.[value]` | Override individual header cells |
+| `item.[value]`   | Override individual row cells    |

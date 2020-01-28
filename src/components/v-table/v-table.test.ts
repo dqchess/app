@@ -74,8 +74,10 @@ describe('Table', () => {
 					col2: 2
 				}
 			],
-			sortBy: 'col1',
-			sortDesc: false
+			sort: {
+				by: 'col1',
+				desc: false
+			}
 		});
 
 		await component.vm.$nextTick();
@@ -216,8 +218,8 @@ describe('Table', () => {
 
 		component.find('th .content').trigger('click');
 
-		expect((component.vm as any)._sortBy).toEqual('col1');
-		expect(component.emitted('update:sort-by')[0]).toEqual(['col1']);
+		expect((component.vm as any)._sort.by).toEqual('col1');
+		expect(component.emitted('update:sort')[0]).toEqual([{ by: 'col1', desc: false }]);
 	});
 
 	it('Handles sort desc updates coming from header', async () => {
@@ -246,15 +248,18 @@ describe('Table', () => {
 					col2: 2
 				}
 			],
-			sortBy: 'col1'
+			sort: {
+				by: 'col1',
+				desc: false
+			}
 		});
 
 		await component.vm.$nextTick();
 
 		component.find('th .content').trigger('click');
 
-		expect((component.vm as any)._sortDesc).toEqual(true);
-		expect(component.emitted('update:sort-desc')[0]).toEqual([true]);
+		expect((component.vm as any)._sort.desc).toEqual(true);
+		expect(component.emitted('update:sort')[0]).toEqual([{ by: 'col1', desc: true }]);
 	});
 
 	it('Updates selection correctly', async () => {

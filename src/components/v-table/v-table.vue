@@ -3,8 +3,7 @@
 		<table>
 			<table-header
 				:headers="_headers"
-				:sort-desc="_sortDesc"
-				:sort-by="_sortBy"
+				:sort="_sort"
 				:show-select="showSelect"
 				:show-resize="showResize"
 				:some-items-selected="someItemsSelected"
@@ -12,8 +11,7 @@
 				:fixed="fixedHeader"
 				@toggle-select-all="onToggleSelectAll"
 				@update:headers="onUpdateHeaders"
-				@update:sort-by="onUpdateSortBy"
-				@update:sort-desc="onUpdateSortDesc"
+				@update:sort="onUpdateSort"
 			>
 				<template v-for="header in _headers" #[`header.${header.value}`]>
 					<slot :header="header" :name="`header.${header.value}`" />
@@ -51,7 +49,7 @@
 <script lang="ts">
 import { VNode } from 'vue';
 import { createComponent, computed, ref, watch, Ref, PropType } from '@vue/composition-api';
-import { Header, HeaderRaw, ItemSelectEvent } from './types';
+import { Header, HeaderRaw, ItemSelectEvent, Sort } from './types';
 import TableHeader from './_table-header.vue';
 import TableRow from './_table-row.vue';
 import { sortBy, clone, mapValues } from 'lodash';
@@ -88,13 +86,12 @@ export default createComponent({
 			type: String,
 			default: 'id'
 		},
-		sortBy: {
-			type: String,
-			default: null
-		},
-		sortDesc: {
-			type: Boolean,
-			default: false
+		sort: {
+			type: Object as PropType<Sort>,
+			default: (): Sort => ({
+				by: null,
+				desc: false
+			})
 		},
 		showSelect: {
 			type: Boolean,
@@ -123,13 +120,13 @@ export default createComponent({
 		loadingText: {
 			type: String,
 			default: i18n.t('loading')
+		},
+		serverSort: {
+			type: Boolean,
+			default: false
 		}
 	},
 	setup(props, { slots, emit }) {
-		// We keep a manual copy of the sort status / headers instead of always relying on the parent in order
-		// to support sorting for inline tables without any additional state management.
-		let _sortBy = ref<string | null>(props.sortBy);
-		let _sortDesc = ref<Boolean>(props.sortDesc);
 		/**
 		 * Headers prop merged with the default values for each Header
 		 */
@@ -140,16 +137,20 @@ export default createComponent({
 			}))
 		);
 
-		// This does mean that we have to watch the props, and update the local state manually on
-		// changes of the props.
-		watch(
-			() => props.sortBy,
-			(newSort: string) => (_sortBy.value = props.sortBy)
+		const fallbackSortHeader: Header | undefined = _headers.value.find(
+			(header: Header) => header.sortable === true
 		);
 
+		const fallbackSortProperty: string | null =
+			(fallbackSortHeader && fallbackSortHeader.value) || null;
+
+		let _sort = ref<Sort>(props.sort);
+
 		watch(
-			() => props.sortDesc,
-			(newSort: boolean) => (_sortDesc.value = props.sortDesc)
+			() => props.sort,
+			(newSort: Sort) => {
+				_sort.value = newSort;
+			}
 		);
 
 		watch(
@@ -161,24 +162,16 @@ export default createComponent({
 				})))
 		);
 
-		/**
-		 * Items sorted based on sort-by and sort-desc props
-		 */
 		const _items = computed<object[]>(() => {
-			const fallbackSortHeader: Header | undefined = _headers.value.find(
-				(header: Header) => header.sortable === true
-			);
+			if (props.serverSort === false) {
+				if (_sort.value.by === null) return props.items;
 
-			const fallbackSortProperty: string | null =
-				(fallbackSortHeader && fallbackSortHeader.value) || null;
+				const itemsSorted = sortBy(props.items, [_sort.value.by]);
+				if (_sort.value.desc === true) return itemsSorted.reverse();
+				return itemsSorted;
+			}
 
-			let sortProperty: string | null = _sortBy.value || fallbackSortProperty;
-
-			if (sortProperty === null) return props.items;
-
-			const itemsSorted = sortBy(props.items, [sortProperty]);
-			if (_sortDesc.value === true) return itemsSorted.reverse();
-			return itemsSorted;
+			return props.items;
 		});
 
 		const allItemsSelected = computed<boolean>(() => {
@@ -206,27 +199,20 @@ export default createComponent({
 		return {
 			_headers,
 			_items,
-			_sortBy,
-			_sortDesc,
+			_sort,
 			allItemsSelected,
 			getSelectedState,
 			onItemSelected,
 			onToggleSelectAll,
-			onUpdateSortBy,
-			onUpdateSortDesc,
+			onUpdateSort,
 			someItemsSelected,
 			styles,
 			onUpdateHeaders
 		};
 
-		function onUpdateSortBy(value: string) {
-			_sortBy.value = value;
-			emit('update:sort-by', value);
-		}
-
-		function onUpdateSortDesc(value: boolean) {
-			_sortDesc.value = value;
-			emit('update:sort-desc', value);
+		function onUpdateSort(value: Sort) {
+			_sort.value = value;
+			emit('update:sort', value);
 		}
 
 		function onItemSelected(event: ItemSelectEvent) {

@@ -14,3 +14,8 @@ export type ItemSelectEvent = {
 	value: boolean;
 	item: any;
 };
+
+export type Sort = {
+	by: string | null;
+	desc: boolean;
+};
