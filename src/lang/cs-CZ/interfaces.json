@@ -323,7 +323,7 @@
 			"map_lat_comment": "Map will be centered at this latitude",
 			"map_lng": "Default Longitude",
 			"map_lng_comment": "Map will be centered at this longitude",
-			"height": "Height",
+			"height": "Výška",
 			"default_zoom": "Default Zoom",
 			"default_zoom_comment": "Default zoom level of the map",
 			"max_zoom": "Max Zoom",
@@ -598,7 +598,7 @@
 			"placeholder_comment": "Add a placeholder"
 		},
 		"owner": {
-			"owner": "Owner",
+			"owner": "Vlastník",
 			"avatar": "Avatar",
 			"name": "Jméno",
 			"template": "Template",
