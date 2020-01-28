@@ -76,11 +76,6 @@ export default createComponent({
 		text-overflow: ellipsis;
 	}
 
-	.select {
-		width: 24px;
-		padding-right: 0;
-	}
-
 	&.subdued {
 		opacity: 0.3;
 	}
