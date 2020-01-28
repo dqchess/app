@@ -54,7 +54,8 @@ import { Header, HeaderRaw, ItemSelectEvent } from './types';
 import TableHeader from './_table-header.vue';
 import TableRow from './_table-row.vue';
 import { sortBy, clone } from 'lodash';
-import { i18n } from '@/lang/';
+
+const { i18n } = require('@/lang/');
 
 const HeaderDefaults: Header = {
 	text: '',
