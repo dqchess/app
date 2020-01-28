@@ -32,7 +32,6 @@
 import { createComponent, ref, onMounted, onBeforeUnmount } from '@vue/composition-api';
 import useEventListener from '@/compositions/event-listener';
 import { Alignment, Header } from './types';
-import { MouseEvent } from 'react';
 
 export default createComponent({
 	props: {
@@ -149,7 +148,8 @@ export default createComponent({
 		function onDragHandleMouseDown(header: Header, event: MouseEvent) {
 			dragging.value = true;
 			dragStartX.value = event.pageX;
-			dragStartWidth.value = event.target.offsetParent.offsetWidth;
+			dragStartWidth.value = ((event.target as HTMLDivElement)
+				.offsetParent as HTMLTableHeaderCellElement).offsetWidth;
 		}
 
 		function onMouseMove(event: MouseEvent) {
