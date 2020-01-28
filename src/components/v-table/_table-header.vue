@@ -1,5 +1,5 @@
 <template>
-	<thead class="v-table_table-header">
+	<thead class="v-table_table-header" :class="{ dragging }">
 		<tr :class="{ fixed }">
 			<th v-if="showSelect" class="select cell">
 				<v-checkbox
@@ -85,7 +85,8 @@ export default createComponent({
 			getStyleForHeader,
 			changeSort,
 			toggleSelectAll,
-			onDragHandleMouseDown
+			onDragHandleMouseDown,
+			dragging
 		};
 
 		function getClassesForHeader(header: Header) {
@@ -200,8 +201,6 @@ export default createComponent({
 	}
 
 	.sortable {
-		cursor: pointer;
-
 		.sort-icon {
 			opacity: 0;
 			transform: scaleY(-1);
@@ -224,6 +223,10 @@ export default createComponent({
 				transform: scaleY(1);
 			}
 		}
+	}
+
+	:not(&.dragging) .sortable {
+		cursor: pointer;
 	}
 
 	.select {
