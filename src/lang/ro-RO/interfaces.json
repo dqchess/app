@@ -11,12 +11,12 @@
 			"theme_comment": "Set the theme of the interface if supported",
 			"value": "Value",
 			"flight": "Zbor",
-			"cruise": "Cruise",
-			"run": "Run",
-			"bus": "Bus",
-			"bike": "Bike",
-			"train": "Train",
-			"car": "Car",
+			"cruise": "Călătorii",
+			"run": "Rulează",
+			"bus": "Autobuz",
+			"bike": "Bicicletă",
+			"train": "Tren",
+			"car": "Mașină",
 			"other": "Other"
 		},
 		"calendar": {
