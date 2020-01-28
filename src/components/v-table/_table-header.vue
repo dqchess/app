@@ -1,6 +1,9 @@
 <template>
 	<thead class="v-table_table-header" :class="{ dragging }">
 		<tr :class="{ fixed }">
+			<th v-if="showManualSort" class="manual cell">
+				<v-icon name="drag_handle" class="drag-handle" />
+			</th>
 			<th v-if="showSelect" class="select cell">
 				<v-checkbox
 					:inputValue="allItemsSelected"
@@ -20,7 +23,7 @@
 					<v-icon v-if="header.sortable" name="sort" class="sort-icon" small />
 				</div>
 				<span
-					class="drag-handle"
+					class="resize-handle"
 					v-if="showResize && index !== headers.length - 1"
 					@click.stop
 					@mousedown="onDragHandleMouseDown(header, $event)"
@@ -54,6 +57,10 @@ export default createComponent({
 			type: Boolean,
 			default: false
 		},
+		showManualSort: {
+			type: Boolean,
+			default: false
+		},
 		someItemsSelected: {
 			type: Boolean,
 			default: false
@@ -63,6 +70,10 @@ export default createComponent({
 			default: false
 		},
 		fixed: {
+			type: Boolean,
+			default: false
+		},
+		sortedManually: {
 			type: Boolean,
 			default: false
 		}
@@ -232,7 +243,8 @@ export default createComponent({
 		cursor: pointer;
 	}
 
-	.select {
+	.select,
+	.manual {
 		width: 40px;
 		padding-right: 0;
 	}
@@ -242,7 +254,7 @@ export default createComponent({
 		top: 0;
 	}
 
-	.drag-handle {
+	.resize-handle {
 		cursor: ew-resize;
 		width: 5px;
 		height: 100%;

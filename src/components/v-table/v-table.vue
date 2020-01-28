@@ -9,6 +9,8 @@
 				:some-items-selected="someItemsSelected"
 				:all-items-selected="allItemsSelected"
 				:fixed="fixedHeader"
+				:show-manual-sort="showManualSort"
+				:sorted-manually="_sort.by === '$manual'"
 				@toggle-select-all="onToggleSelectAll"
 				@update:headers="onUpdateHeaders"
 				@update:sort="onUpdateSort"
@@ -22,7 +24,7 @@
 					<v-progress-linear indeterminate v-if="loading" :height="2" />
 				</th>
 			</thead>
-			<tbody>
+			<draggable :value="_items" tag="tbody" handle=".drag-handle">
 				<tr v-if="loading && items.length === 0" class="loading-text">
 					<td :colspan="_headers.length">{{ loadingText }}</td>
 				</tr>
@@ -33,15 +35,17 @@
 					:item="item"
 					:key="item[itemKey]"
 					:show-select="showSelect"
+					:show-manual-sort="showManualSort"
 					:is-selected="getSelectedState(item)"
 					:subdued="loading"
+					:sorted-manually="_sort.by === '$manual'"
 					@item-selected="onItemSelected"
 				>
 					<template v-for="header in _headers" #[`item.${header.value}`]>
 						<slot :item="item" :name="`item.${header.value}`" />
 					</template>
 				</table-row>
-			</tbody>
+			</draggable>
 		</table>
 	</div>
 </template>
@@ -53,6 +57,7 @@ import { Header, HeaderRaw, ItemSelectEvent, Sort } from './types';
 import TableHeader from './_table-header.vue';
 import TableRow from './_table-row.vue';
 import { sortBy, clone, mapValues } from 'lodash';
+const draggable = require('vuedraggable');
 
 const { i18n } = require('@/lang/');
 
@@ -67,7 +72,8 @@ const HeaderDefaults: Header = {
 export default createComponent({
 	components: {
 		TableHeader,
-		TableRow
+		TableRow,
+		draggable
 	},
 	model: {
 		prop: 'selection',
@@ -98,6 +104,10 @@ export default createComponent({
 			default: false
 		},
 		showResize: {
+			type: Boolean,
+			default: false
+		},
+		showManualSort: {
 			type: Boolean,
 			default: false
 		},

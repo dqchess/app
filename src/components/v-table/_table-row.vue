@@ -1,5 +1,8 @@
 <template>
 	<tr class="v-table_table-row" :class="{ subdued }">
+		<td v-if="showManualSort" class="manual cell">
+			<v-icon name="drag_handle" class="drag-handle" />
+		</td>
 		<td v-if="showSelect" class="select cell">
 			<v-checkbox :inputValue="isSelected" @change="toggleSelect" />
 		</td>
@@ -16,7 +19,7 @@
 
 <script lang="ts">
 import { createComponent, PropType } from '@vue/composition-api';
-import { Header } from './types';
+import { Header, Sort } from './types';
 
 export default createComponent({
 	props: {
@@ -32,11 +35,19 @@ export default createComponent({
 			type: Boolean,
 			default: false
 		},
+		showManualSort: {
+			type: Boolean,
+			default: false
+		},
 		isSelected: {
 			type: Boolean,
 			default: false
 		},
 		subdued: {
+			type: Boolean,
+			default: false
+		},
+		sortedManually: {
 			type: Boolean,
 			default: false
 		}
