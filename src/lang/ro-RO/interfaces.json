@@ -5,12 +5,12 @@
 		},
 		"button-group": {
 			"button_group": "Button Group",
-			"choices": "Choices",
+			"choices": "Opțiuni",
 			"choices_comment": "Enter JSON key value pairs with the saved value and text displayed.",
 			"theme": "Interface Theme",
 			"theme_comment": "Set the theme of the interface if supported",
 			"value": "Value",
-			"flight": "Flight",
+			"flight": "Zbor",
 			"cruise": "Cruise",
 			"run": "Run",
 			"bus": "Bus",
@@ -30,7 +30,7 @@
 		},
 		"checkboxes": {
 			"checkboxes": "Checkboxes",
-			"choices": "Choices",
+			"choices": "Opțiuni",
 			"choices_comment": "Enter JSON key value pairs with the saved value and text displayed.",
 			"wrap": "Wrap with Delimiter",
 			"wrap_comment": "Wrap the saved value in a delimiter (improves searchability).",
@@ -156,7 +156,7 @@
 		},
 		"dropdown": {
 			"dropdown": "Dropdown",
-			"choices": "Choices",
+			"choices": "Opțiuni",
 			"choices_comment": "Enter JSON key value pairs with the saved value and text displayed.",
 			"placeholder": "Placeholder",
 			"placeholder_comment": "Static text that shown before a value is selected",
@@ -353,7 +353,7 @@
 		},
 		"multiselect": {
 			"multiselect": "Multi-Select",
-			"choices": "Choices",
+			"choices": "Opțiuni",
 			"choices_comment": "Enter JSON key value pairs with the saved value and displayed text",
 			"placeholder": "Placeholder",
 			"placeholder_comment": "Enter placeholder text",
@@ -399,7 +399,7 @@
 			"sort_field_comment": "The field to store the sort value in"
 		},
 		"password": {
-			"password": "Password",
+			"password": "Parolă",
 			"hide": "Hide Value",
 			"hide_comment": "Display dots instead of the characters you enter",
 			"placeholder": "Placeholder",
@@ -424,7 +424,7 @@
 		},
 		"radio-buttons": {
 			"radio": "Radio Buttons",
-			"choices": "Choices",
+			"choices": "Opțiuni",
 			"choices_comment": "Enter JSON key value pairs with the saved value and text displayed.",
 			"option": "Option",
 			"format": "Browse Format",
@@ -484,7 +484,7 @@
 			"sort": "Sort"
 		},
 		"status": {
-			"status": "Status",
+			"status": "Stare",
 			"status_mapping": "Status Mapping",
 			"status_mapping_comment": "Enter JSON status options",
 			"simple_badge": "Simple Badge",
