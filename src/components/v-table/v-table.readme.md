@@ -76,16 +76,51 @@ You can override the columns in a row by using the dynamic `item.[name]` slot. `
 
 In this slot, you have access to the `item` through the scoped slot binding.
 
+## Resizable rows
+
+Adding the `show-resize` prop allows the user to resize the columns at will. You can keep your headers updated by using the `.sync` modifier or listening to the `update:headers` event:
+
+```html
+<template>
+	<v-table :headers.sync="headers" :items="[]" show-resize>
+</template>
+
+<script>
+import { createComponent, ref } from '@vue/composition-api';
+import { HeaderRaw } from '@/components/v-table/types';
+
+export default createComponent({
+	setup() {
+		const headers = ref<HeaderRaw[]>([
+			{
+				text: 'Column 1',
+				value: 'col1',
+				width: 150
+			},
+			{
+				text: 'Column 1',
+				value: 'col1',
+				width: 300
+			}
+		]);
+
+		return { headers };
+	}
+});
+</script>
+```
+
 ## Props
 
 | Prop           | Description                                                         | Default |
 |----------------|---------------------------------------------------------------------|---------|
-| `headers`*     | What columns to show in the table                                   | --      |
+| `headers`*     | What columns to show in the table. Supports the `.sync` modifier    | --      |
 | `items`*       | The individual items to render as rows                              | --      |
 | `item-key`     | Primary key of the item. Used for keys / selections                 | `id`    |
 | `sort-by`      | What column to sort by. Supports the `.sync` modifier               | --      |
 | `sort-desc`    | Sort descending instead of ascending. Supports the `.sync` modifier | `false` |
 | `show-select`  | Show checkboxes                                                     | `false` |
+| `show-resize`  | Show resize handlers                                                | `false` |
 | `selection`    | What items are selected. Can be used with `v-model` as well         | `[]`    |
 | `fixed-header` | Make the header fixed                                               | `false` |
 | `height`       | A fixed height (in px) for the table                                | --      |
@@ -96,6 +131,7 @@ In this slot, you have access to the `item` through the scoped slot binding.
 |--------------------|------------------------------------------------|---------------------------------|
 | `update:sort-by`   | `.sync` event for `sort-by` prop               | `string`                        |
 | `update:sort-desc` | `.sync` event for `sort-desc` prop             | `boolean`                       |
+| `update:headers`   | `.sync` event for `headers` prop               | `HeaderRaw[]`                   |
 | `item-selected`    | Emitted when an item is selected or deselected | `{ item: any, value: boolean }` |
 | `select`           | Emitted when selected items change             | `any[]`                         |
 
