@@ -33,10 +33,21 @@ value: {{value}}
 export const withTicks = () => ({
 	data() {
 		return {
-			value: 50
+			value: 12
 		};
 	},
 	template: `
 	<v-slider :min="5" :max="15" v-model="value" ticks />
+`
+});
+
+export const withThumbLabel = () => ({
+	data() {
+		return {
+			value: 50
+		};
+	},
+	template: `
+	<v-slider :min="5" :max="15" v-model="value" show-thumb-label />
 `
 });

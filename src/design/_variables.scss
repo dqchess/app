@@ -425,8 +425,8 @@ body {
   --input-note-margin: 4px;
 
   --slider-track-color: var(--input-border-color);
-  --slider-track-fill-color: red;
-  --slider-thumb-color: purple;
+  --slider-track-fill-color: var(--input-text-color);
+  --slider-thumb-color: var(--input-text-color);
 
   // Deprecated
 

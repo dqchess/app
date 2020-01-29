@@ -47,7 +47,7 @@ export default {
 		},
 		max: {
 			type: Number,
-			required: true
+			default: 100
 		},
 		step: {
 			type: [Number, String],
