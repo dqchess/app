@@ -2,8 +2,8 @@
 	<div class="v-table" :style="styles" :class="{ loading }">
 		<table>
 			<table-header
-				:headers="_headers"
-				:sort="_sort"
+				:headers.sync="_headers"
+				:sort.sync="_sort"
 				:show-select="showSelect"
 				:show-resize="showResize"
 				:some-items-selected="someItemsSelected"
@@ -12,8 +12,6 @@
 				:show-manual-sort="showManualSort"
 				:sorted-manually="_sort.by === '$manual'"
 				@toggle-select-all="onToggleSelectAll"
-				@update:headers="onUpdateHeaders"
-				@update:sort="onUpdateSort"
 			>
 				<template v-for="header in _headers" #[`header.${header.value}`]>
 					<slot :header="header" :name="`header.${header.value}`" />
@@ -34,7 +32,7 @@
 				v-model="_items"
 				tag="tbody"
 				handle=".drag-handle"
-				:disabled="sort.by !== '$manual'"
+				:disabled="_sort.by !== '$manual'"
 				@end="onEndDrag"
 			>
 				<table-row
@@ -102,10 +100,7 @@ export default createComponent({
 		},
 		sort: {
 			type: Object as PropType<Sort>,
-			default: (): Sort => ({
-				by: null,
-				desc: false
-			})
+			default: null
 		},
 		showSelect: {
 			type: Boolean,
@@ -145,44 +140,44 @@ export default createComponent({
 		}
 	},
 	setup(props, { slots, emit }) {
-		/**
-		 * Headers prop merged with the default values for each Header
-		 */
-		let _headers = ref<Header[]>(
-			props.headers.map((header: HeaderRaw) => ({
-				...HeaderDefaults,
-				...header
-			}))
-		);
-
-		const fallbackSortHeader: Header | undefined = _headers.value.find(
-			(header: Header) => header.sortable === true
-		);
-
-		const fallbackSortProperty: string | null =
-			(fallbackSortHeader && fallbackSortHeader.value) || null;
-
-		let _sort = ref<Sort>(props.sort);
-
-		watch(
-			() => props.sort,
-			(newSort: Sort) => {
-				_sort.value = newSort;
-			}
-		);
-
-		watch(
-			() => props.headers,
-			(newHeaders: HeaderRaw[]) =>
-				(_headers.value = newHeaders.map((header: HeaderRaw) => ({
+		const _headers = computed({
+			get: () => {
+				return props.headers.map((header: HeaderRaw) => ({
 					...HeaderDefaults,
 					...header
-				})))
-		);
+				}));
+			},
+			set: (newHeaders: Header[]) => {
+				emit(
+					'update:headers',
+					// We'll return the original headers with the updated values, so we don't stage
+					// all the default values
+					props.headers.map((header: HeaderRaw, index: number) => {
+						return mapValues(header, (value: any, key: keyof Header) => {
+							return newHeaders[index][key];
+						});
+					})
+				);
+			}
+		});
+
+		// In case the sort prop isn't used, we'll use this local sort state as a fallback
+		const _localSort = ref<Sort>({
+			by: null,
+			desc: false
+		});
+
+		const _sort = computed({
+			get: () => props.sort || _localSort.value,
+			set: (newSort: Sort) => {
+				emit('update:sort', newSort);
+				_localSort.value = newSort;
+			}
+		});
 
 		const _items = computed({
 			get: () => {
-				if (props.serverSort === true || props.sort.by === '$manual') {
+				if (props.serverSort === true || _sort.value.by === '$manual') {
 					return props.items;
 				}
 
@@ -227,17 +222,10 @@ export default createComponent({
 			getSelectedState,
 			onItemSelected,
 			onToggleSelectAll,
-			onUpdateSort,
 			someItemsSelected,
 			styles,
-			onUpdateHeaders,
 			onEndDrag
 		};
-
-		function onUpdateSort(value: Sort) {
-			_sort.value = value;
-			emit('update:sort', value);
-		}
 
 		function onItemSelected(event: ItemSelectEvent) {
 			emit('item-selected', event);
@@ -268,20 +256,6 @@ export default createComponent({
 			} else {
 				emit('select', []);
 			}
-		}
-
-		function onUpdateHeaders(newHeaders: Header[]) {
-			_headers.value = newHeaders;
-
-			// We'll update the passed in headers, so we don't send the defaults up if we don't have to
-			emit(
-				'update:headers',
-				props.headers.map((header: HeaderRaw, index: number) => {
-					return mapValues(header, (value: any, key: keyof Header) => {
-						return newHeaders[index][key];
-					});
-				})
-			);
 		}
 
 		interface VueDraggableDropEvent extends CustomEvent {

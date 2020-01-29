@@ -86,7 +86,7 @@ export default createComponent({
 	.cell {
 		border-bottom: 1px solid var(--table-row-border-color);
 		height: 48px;
-		padding: 0 16px;
+		padding: 0 20px;
 		background-color: var(--table-background-color);
 		white-space: nowrap;
 		overflow: hidden;

@@ -221,7 +221,7 @@ export default createComponent({
 .v-table_table-header {
 	.cell {
 		background-color: var(--table-background-color);
-		padding: 0 16px;
+		padding: 0 20px;
 		border-bottom: 1px solid var(--table-head-border-color);
 		height: 48px;
 		font-size: 14px;
@@ -232,8 +232,9 @@ export default createComponent({
 	.sortable {
 		.sort-icon {
 			opacity: 0;
-			transform: scaleY(-1);
+			transform: scaleY(-1) translateX(4px);
 			transition: opacity var(--fast) var(--transition);
+			position: absolute;
 		}
 
 		&:hover .sort-icon {
@@ -249,7 +250,7 @@ export default createComponent({
 
 		&.sort-desc {
 			.sort-icon {
-				transform: scaleY(1);
+				transform: scaleY(1) translateX(4px);
 			}
 		}
 	}
@@ -260,7 +261,7 @@ export default createComponent({
 
 	.select,
 	.manual {
-		width: 40px;
+		width: 42px;
 		padding-right: 0;
 	}
 
