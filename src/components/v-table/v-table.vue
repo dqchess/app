@@ -46,6 +46,7 @@
 					:subdued="loading"
 					:sorted-manually="_sort.by === '$manual'"
 					:has-click-listener="hasRowClick"
+					:height="rowHeight"
 					@click="hasRowClick ? $emit('click:row', item) : null"
 					@item-selected="onItemSelected"
 				>
@@ -139,6 +140,10 @@ export default createComponent({
 		serverSort: {
 			type: Boolean,
 			default: false
+		},
+		rowHeight: {
+			type: Number,
+			default: 48
 		}
 	},
 	setup(props, { slots, emit, listeners }) {
