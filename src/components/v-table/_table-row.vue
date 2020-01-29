@@ -21,7 +21,7 @@
 			v-for="header in headers"
 			:class="getClassesForCell(header)"
 			:key="header.value"
-			:style="{ height: rowHeight + 'px' }"
+			:style="{ height: height + 'px' }"
 		>
 			<slot :name="`item.${header.value}`" :item="item">{{ item[header.value] }}</slot>
 		</td>
@@ -65,6 +65,10 @@ export default createComponent({
 		hasClickListener: {
 			type: Boolean,
 			default: false
+		},
+		height: {
+			type: Number,
+			default: 48
 		}
 	},
 	setup(props, { emit }) {

@@ -328,6 +328,12 @@ export default createComponent({
 		.align-right {
 			text-align: right;
 		}
+
+		.sortable-ghost {
+			.cell {
+				background-color: var(--highlight);
+			}
+		}
 	}
 }
 </style>
