@@ -1,5 +1,9 @@
 <template>
-	<tr class="v-table_table-row" :class="{ subdued }">
+	<tr
+		class="v-table_table-row"
+		:class="{ subdued, clickable: hasClickListener }"
+		@click="$emit('click', $event)"
+	>
 		<td v-if="showManualSort" class="manual cell">
 			<v-icon
 				name="drag_handle"
@@ -56,6 +60,10 @@ export default createComponent({
 		sortedManually: {
 			type: Boolean,
 			default: false
+		},
+		hasClickListener: {
+			type: Boolean,
+			default: false
 		}
 	},
 	setup(props, { emit }) {
@@ -95,6 +103,11 @@ export default createComponent({
 
 	&.subdued {
 		opacity: 0.3;
+	}
+
+	&.clickable:hover .cell {
+		background-color: var(--highlight);
+		cursor: pointer;
 	}
 }
 </style>

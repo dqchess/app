@@ -887,12 +887,7 @@ export const dragNDrop = () => ({
 					tel: '(330) 777-3240',
 					contact: 'Helenka Killely'
 				}
-			],
-			sort: {
-				by: '$manual',
-				desc: false
-			},
-			loading: false
+			]
 		};
 	},
 	methods: {
@@ -911,6 +906,75 @@ export const dragNDrop = () => ({
 				<pre style="max-width: max-content; margin-top: 20px; background-color: #eee; font-family: monospace; padding: 0.5rem; border-radius: 8px;">
 items: {{ items }}
 		</pre>
+	</div>
+	`
+});
+
+export const rowClick = () => ({
+	data() {
+		return {
+			headers: [
+				{
+					text: 'Name',
+					value: 'name',
+					width: 150
+				},
+				{
+					text: 'Phone',
+					value: 'tel',
+					width: 150
+				},
+				{
+					text: 'Contact',
+					value: 'contact',
+					width: 250
+				}
+			],
+			items: [
+				{
+					id: 1,
+					name: 'Amsterdam',
+					tel: '(020) 333-0987',
+					contact: 'Mariann Rumble'
+				},
+				{
+					id: 2,
+					name: 'Beverly Hills',
+					tel: '(123) 333-0987',
+					contact: 'Kathy Baughan'
+				},
+				{
+					id: 3,
+					name: 'New Haven',
+					tel: '(203) 687-9900',
+					contact: 'Fleur Tebbet'
+				},
+				{
+					id: 4,
+					name: 'Hong Kong',
+					tel: '(430) 709-4011',
+					contact: 'Rodolph Tofful'
+				},
+				{
+					id: 5,
+					name: 'Ahmedabad',
+					tel: '(330) 777-3240',
+					contact: 'Helenka Killely'
+				}
+			]
+		};
+	},
+	methods: {
+		onClick: action('click:row')
+	},
+	template: `
+	<div>
+		<v-table
+			:headers="headers"
+			:items="items"
+			item-key="id"
+			@click:row="onClick"
+		/>
 	</div>
 	`
 });

@@ -45,6 +45,8 @@
 					:is-selected="getSelectedState(item)"
 					:subdued="loading"
 					:sorted-manually="_sort.by === '$manual'"
+					:has-click-listener="hasRowClick"
+					@click="hasRowClick ? $emit('click:row', item) : null"
 					@item-selected="onItemSelected"
 				>
 					<template v-for="header in _headers" #[`item.${header.value}`]>
@@ -139,7 +141,7 @@ export default createComponent({
 			default: false
 		}
 	},
-	setup(props, { slots, emit }) {
+	setup(props, { slots, emit, listeners }) {
 		const _headers = computed({
 			get: () => {
 				return props.headers.map((header: HeaderRaw) => ({
@@ -161,7 +163,8 @@ export default createComponent({
 			}
 		});
 
-		// In case the sort prop isn't used, we'll use this local sort state as a fallback
+		// In case the sort prop isn't used, we'll use this local sort state as a fallback.
+		// This allows the table to allow inline sorting on column ootb without the need for
 		const _localSort = ref<Sort>({
 			by: null,
 			desc: false
@@ -214,6 +217,8 @@ export default createComponent({
 			return styles;
 		});
 
+		const hasRowClick = computed<boolean>(() => listeners.hasOwnProperty('click:row'));
+
 		return {
 			_headers,
 			_items,
@@ -224,7 +229,8 @@ export default createComponent({
 			onToggleSelectAll,
 			someItemsSelected,
 			styles,
-			onEndDrag
+			onEndDrag,
+			hasRowClick
 		};
 
 		function onItemSelected(event: ItemSelectEvent) {
