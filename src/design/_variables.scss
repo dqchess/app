@@ -424,9 +424,12 @@ body {
   --input-label-margin: 8px;
   --input-note-margin: 4px;
 
+  --slider-track-color: var(--input-border-color);
+  --slider-track-fill-color: red;
+  --slider-thumb-color: purple;
+
   // Deprecated
 
   --size-2: 16px;
   --size-3: 14px;
-
 }
