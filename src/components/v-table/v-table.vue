@@ -24,16 +24,24 @@
 					<v-progress-linear indeterminate v-if="loading" :height="2" />
 				</th>
 			</thead>
-			<draggable :value="_items" tag="tbody" handle=".drag-handle">
-				<tr v-if="loading && items.length === 0" class="loading-text">
+			<tbody v-if="loading && items.length === 0">
+				<tr class="loading-text">
 					<td :colspan="_headers.length">{{ loadingText }}</td>
 				</tr>
-
+			</tbody>
+			<draggable
+				v-else
+				v-model="_items"
+				tag="tbody"
+				handle=".drag-handle"
+				:disabled="sort.by !== '$manual'"
+				@end="onEndDrag"
+			>
 				<table-row
 					v-for="item in _items"
+					:key="item[itemKey]"
 					:headers="_headers"
 					:item="item"
-					:key="item[itemKey]"
 					:show-select="showSelect"
 					:show-manual-sort="showManualSort"
 					:is-selected="getSelectedState(item)"
@@ -172,16 +180,21 @@ export default createComponent({
 				})))
 		);
 
-		const _items = computed<object[]>(() => {
-			if (props.serverSort === false) {
+		const _items = computed({
+			get: () => {
+				if (props.serverSort === true || props.sort.by === '$manual') {
+					return props.items;
+				}
+
 				if (_sort.value.by === null) return props.items;
 
 				const itemsSorted = sortBy(props.items, [_sort.value.by]);
 				if (_sort.value.desc === true) return itemsSorted.reverse();
 				return itemsSorted;
+			},
+			set: (value: object[]) => {
+				emit('update:items', value);
 			}
-
-			return props.items;
 		});
 
 		const allItemsSelected = computed<boolean>(() => {
@@ -217,7 +230,8 @@ export default createComponent({
 			onUpdateSort,
 			someItemsSelected,
 			styles,
-			onUpdateHeaders
+			onUpdateHeaders,
+			onEndDrag
 		};
 
 		function onUpdateSort(value: Sort) {
@@ -268,6 +282,15 @@ export default createComponent({
 					});
 				})
 			);
+		}
+
+		interface VueDraggableDropEvent extends CustomEvent {
+			oldIndex: number;
+			newIndex: number;
+		}
+
+		function onEndDrag(event: VueDraggableDropEvent) {
+			emit('drop', { oldIndex: event.oldIndex, newIndex: event.newIndex });
 		}
 	}
 });

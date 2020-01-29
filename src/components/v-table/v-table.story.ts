@@ -4,6 +4,7 @@ import { Sort } from './types';
 import Vue from 'vue';
 import VTable from './v-table.vue';
 import markdown from './v-table.readme.md';
+import { action } from '@storybook/addon-actions';
 
 Vue.component('v-table', VTable);
 
@@ -888,18 +889,28 @@ export const dragNDrop = () => ({
 				}
 			],
 			sort: {
-				by: 'id',
+				by: '$manual',
 				desc: false
 			},
 			loading: false
 		};
 	},
+	methods: {
+		onDrop: action('drop')
+	},
 	template: `
+	<div>
 		<v-table
 			:headers.sync="headers"
 			:items.sync="items"
 			:sort.sync="sort"
+			@drop="onDrop"
+			item-key="id"
 			show-manual-sort
 		/>
+				<pre style="max-width: max-content; margin-top: 20px; background-color: #eee; font-family: monospace; padding: 0.5rem; border-radius: 8px;">
+items: {{ items }}
+		</pre>
+	</div>
 	`
 });

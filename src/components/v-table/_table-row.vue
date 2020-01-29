@@ -1,7 +1,13 @@
 <template>
 	<tr class="v-table_table-row" :class="{ subdued }">
 		<td v-if="showManualSort" class="manual cell">
-			<v-icon name="drag_handle" class="drag-handle" />
+			<v-icon
+				name="drag_handle"
+				class="drag-handle"
+				:color="
+					sortedManually ? '--input-border-color' : '--input-background-color-disabled'
+				"
+			/>
 		</td>
 		<td v-if="showSelect" class="select cell">
 			<v-checkbox :inputValue="isSelected" @change="toggleSelect" />

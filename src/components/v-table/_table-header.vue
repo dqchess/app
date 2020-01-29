@@ -1,8 +1,8 @@
 <template>
 	<thead class="v-table_table-header" :class="{ dragging }">
 		<tr :class="{ fixed }">
-			<th v-if="showManualSort" class="manual cell">
-				<v-icon name="drag_handle" class="drag-handle" />
+			<th v-if="showManualSort" class="manual cell" @click="toggleManualSort">
+				<v-icon name="sort" class="drag-handle" small />
 			</th>
 			<th v-if="showSelect" class="select cell">
 				<v-checkbox
@@ -93,7 +93,8 @@ export default createComponent({
 			changeSort,
 			toggleSelectAll,
 			onDragHandleMouseDown,
-			dragging
+			dragging,
+			toggleManualSort
 		};
 
 		function getClassesForHeader(header: Header) {
@@ -196,6 +197,20 @@ export default createComponent({
 		function onMouseUp(event: MouseEvent) {
 			if (dragging.value === true) {
 				dragging.value = false;
+			}
+		}
+
+		function toggleManualSort() {
+			if (props.sort.by === '$manual') {
+				emit('update:sort', {
+					by: null,
+					desc: false
+				});
+			} else {
+				emit('update:sort', {
+					by: '$manual',
+					desc: false
+				});
 			}
 		}
 	}
