@@ -887,7 +887,11 @@ export const dragNDrop = () => ({
 					tel: '(330) 777-3240',
 					contact: 'Helenka Killely'
 				}
-			]
+			],
+			sort: {
+				by: '$manual',
+				desc: false
+			}
 		};
 	},
 	methods: {
