@@ -4,6 +4,8 @@
 			{{ $t('relationship_not_setup') }}
 		</v-notice>
 
+		<v-spinner v-else-if="initialValue === null" />
+
 		<template v-else>
 			<div v-if="items && items.length" class="table">
 				<div class="header">
