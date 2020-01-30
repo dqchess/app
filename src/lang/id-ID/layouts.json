@@ -1,7 +1,7 @@
 {
   "layouts": {
     "calendar": {
-      "calendar": "Calendar",
+      "calendar": "Kalender",
       "fields": "Bidang",
       "today": "today",
       "events": "Events",
