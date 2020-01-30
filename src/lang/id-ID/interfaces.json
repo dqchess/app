@@ -1,17 +1,17 @@
 {
 	"interfaces": {
 		"2fa-secret": {
-			"2fa-secret": "2FA Secret"
+			"2fa-secret": "Rahasia 2FA"
 		},
 		"button-group": {
-			"button_group": "Button Group",
-			"choices": "Choices",
-			"choices_comment": "Enter JSON key value pairs with the saved value and text displayed.",
-			"theme": "Interface Theme",
-			"theme_comment": "Set the theme of the interface if supported",
+			"button_group": "Kelompok Tombol",
+			"choices": "Pilihan",
+			"choices_comment": "Masukkan pasangan key value JSON dengan value yang tersimpan dan teks yang ditampilkan.",
+			"theme": "Tema Tampilan",
+			"theme_comment": "Atur tema untuk tampilan jika didukung",
 			"value": "Nilai",
-			"flight": "Flight",
-			"cruise": "Cruise",
+			"flight": "Penerbangan",
+			"cruise": "Kapal Pesiar",
 			"run": "Run",
 			"bus": "Bus",
 			"bike": "Bike",
@@ -30,8 +30,8 @@
 		},
 		"checkboxes": {
 			"checkboxes": "Checkboxes",
-			"choices": "Choices",
-			"choices_comment": "Enter JSON key value pairs with the saved value and text displayed.",
+			"choices": "Pilihan",
+			"choices_comment": "Masukkan pasangan key value JSON dengan value yang tersimpan dan teks yang ditampilkan.",
 			"wrap": "Wrap with Delimiter",
 			"wrap_comment": "Wrap the saved value in a delimiter (improves searchability).",
 			"formatting": "Show display text",
@@ -156,8 +156,8 @@
 		},
 		"dropdown": {
 			"dropdown": "Dropdown",
-			"choices": "Choices",
-			"choices_comment": "Enter JSON key value pairs with the saved value and text displayed.",
+			"choices": "Pilihan",
+			"choices_comment": "Masukkan pasangan key value JSON dengan value yang tersimpan dan teks yang ditampilkan.",
 			"placeholder": "Placeholder",
 			"placeholder_comment": "Static text that shown before a value is selected",
 			"option": "Option",
@@ -315,9 +315,9 @@
 		"map": {
 			"map": "Map",
 			"choices": "choices",
-			"choices_comment": "Enter JSON key value pairs with the saved value and text displayed.",
-			"theme": "Interface Theme",
-			"theme_comment": "Set the theme of the interface if supported",
+			"choices_comment": "Masukkan pasangan key value JSON dengan value yang tersimpan dan teks yang ditampilkan.",
+			"theme": "Tema Tampilan",
+			"theme_comment": "Atur tema untuk tampilan jika didukung",
 			"value": "Nilai",
 			"map_lat": "Default Latitude",
 			"map_lat_comment": "Map will be centered at this latitude",
@@ -353,7 +353,7 @@
 		},
 		"multiselect": {
 			"multiselect": "Multi-Select",
-			"choices": "Choices",
+			"choices": "Pilihan",
 			"choices_comment": "Enter JSON key value pairs with the saved value and displayed text",
 			"placeholder": "Placeholder",
 			"placeholder_comment": "Enter placeholder text",
@@ -424,8 +424,8 @@
 		},
 		"radio-buttons": {
 			"radio": "Radio Buttons",
-			"choices": "Choices",
-			"choices_comment": "Enter JSON key value pairs with the saved value and text displayed.",
+			"choices": "Pilihan",
+			"choices_comment": "Masukkan pasangan key value JSON dengan value yang tersimpan dan teks yang ditampilkan.",
 			"option": "Option",
 			"format": "Browse Format",
 			"format_comment": "The output format on the Browse Items page"
