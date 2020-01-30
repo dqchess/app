@@ -105,7 +105,7 @@
 					</select>
 					<div class="preview">
 						<v-icon :name="layoutIcons[viewType]" color="--sidebar-text-color" />
-						<span>{{ layoutNames[viewType] }}</span>
+						<span class="label">{{ layoutNames[viewType] }}</span>
 						<v-icon name="expand_more" color="--sidebar-text-color" />
 					</div>
 				</div>
@@ -790,9 +790,9 @@ export default {
 		display: flex;
 		align-items: center;
 
-		span {
+		.label {
+			margin-left: 8px;
 			flex-grow: 1;
-			margin-left: 10px;
 		}
 	}
 
