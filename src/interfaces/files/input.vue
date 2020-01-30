@@ -4,6 +4,8 @@
 			{{ $t('relationship_not_setup') }}
 		</v-notice>
 
+		<v-spinner v-if="initialValue === null" />
+
 		<template v-else>
 			<div v-if="items.length" class="table">
 				<div class="header">
@@ -190,7 +192,7 @@ export default {
 			error: null,
 			stagedSelection: null,
 
-			initialValue: _.cloneDeep(this.value) || []
+			initialValue: null
 		};
 	},
 
@@ -304,7 +306,7 @@ export default {
 			this.emitValue(value);
 		}
 	},
-	created() {
+	async created() {
 		if (this.sortable) {
 			this.sort.field = '$manual';
 		} else {
@@ -314,11 +316,26 @@ export default {
 			}
 		}
 
+		await this.getInitialValue();
+
 		// Set the initial set of items. Filter out any broken junction records
-		this.items = (_.cloneDeep(this.value) || []).filter(item => item[this.junctionRelatedKey]);
+		this.items = (_.cloneDeep(this.initialValue) || []).filter(
+			item => item[this.junctionRelatedKey]
+		);
 	},
 
 	methods: {
+		async getInitialValue() {
+			const fields = [this.junctionPrimaryKey, this.relation.junction_field + '.*'];
+			const response = await this.$api.getItems(this.relation.collection_many.collection, {
+				fields,
+				filter: {
+					[this.relation.field_many.field]: this.$route.params.primaryKey
+				}
+			});
+
+			this.initialValue = response.data;
+		},
 		// Change the sort position to the provided field. If the same field is
 		// changed, flip the sort order
 		changeSort(fieldName) {
