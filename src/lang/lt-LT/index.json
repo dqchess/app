@@ -20,11 +20,11 @@
   "auto_generate": "Generuoti Automatiškai",
   "auto_generated": "Sugeneruota automatiškai...",
   "back": "Atgal",
-  "batch": "Batch",
-  "batch_delete": "Batch Delete",
-  "batch_delete_confirm": "No items have been selected | Are you sure you want to delete this item? This action can not be undone. | Are you sure you want to delete these {count} items? This action can not be undone.",
-  "batch_edit": "Batch Editing Items: {collection}",
-  "batch_edit_field": "Batch Edit Field",
+  "batch": "Partija",
+  "batch_delete": "Partinis Trynimas",
+  "batch_delete_confirm": "Įrašai nepažymėti | Ar įsitikinę, jog norite trinti įrašą? Išsitrins negrįštamai. | Ar įsitikinę, jog norite trinti šiuos {count} įrašus? Išsitrins negrįštamai.",
+  "batch_edit": "Partinis Įrašų Redagavimas: {collection}",
+  "batch_edit_field": "Partinis Lauko Redegavimas",
   "between": "Tarp",
   "bookmark_global": "Globalinė Pažymėti visiems",
   "bookmark_personal": "Asmeninė: Pažymėti sau",
@@ -51,14 +51,14 @@
   "collections_and_fields": "Rinkiniai ir Laukai",
   "collections": {
     "directus_activity": "Veiksmas",
-    "directus_files": "Files",
-    "directus_users": "Users"
+    "directus_files": "Failai",
+    "directus_users": "Vartotojai"
   },
   "fields": {
     "directus_activity": {
-      "action": "Action",
-      "collection": "Collection",
-      "item": "Item Primary Key",
+      "action": "Veiksmas",
+      "collection": "Rinkinys",
+      "item": "Įrašo Pirminis Raktas",
       "action_by": "Action By",
       "action_on": "Action On",
       "edited_on": "Edited On",
